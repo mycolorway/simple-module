@@ -34,7 +34,7 @@ class Widget extends Module
   @connect: (cls) ->
     return unless typeof cls is 'function'
     @::_connectedClasses.push(cls)
-    @[cls.name] = cls if cls.name
+    @[cls.className] = cls if cls.className
 
   _connectedClasses: []
 
@@ -71,13 +71,3 @@ window.Module = Module
 window.Widget = Widget
 window.Plugin = Plugin
 
-
-# Hack: IE doesn't support Function.name
-if Function::name == undefined && Object.defineProperty != undefined
-  Object.defineProperty(Function.prototype, 'name', {
-    get: ->
-      funcNameRegex = /function\s([^(]{1,})\(/
-      results = funcNameRegex.exec(this.toString())
-      if results && results.length > 1 then results[1].trim() else ""
-    set: (value) ->
-  })
