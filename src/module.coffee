@@ -33,6 +33,11 @@ class Widget extends Module
 
   @connect: (cls) ->
     return unless typeof cls is 'function'
+
+    unless cls.className
+      throw new Error 'Widget.connect: lack of class property "className"'
+      return
+
     @::_connectedClasses.push(cls)
     @[cls.className] = cls if cls.className
 
@@ -47,7 +52,7 @@ class Widget extends Module
 
 
     instances = for cls in @_connectedClasses
-      name = cls.name.charAt(0).toLowerCase() + cls.name.slice(1)
+      name = cls.className.charAt(0).toLowerCase() + cls.className.slice(1)
       @[name] = new cls(@)
 
     @_init()
@@ -58,6 +63,8 @@ class Widget extends Module
 
 
 class Plugin extends Module
+
+  @className: 'Plugin'
 
   opts: {}
 
