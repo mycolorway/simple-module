@@ -48,8 +48,7 @@ class Widget extends Module
   opts: {}
 
   constructor: (opts) ->
-    $.extend @opts, opts
-
+    @opts = $.extend({}, @opts, opts)
 
     instances = for cls in @_connectedClasses
       name = cls.className.charAt(0).toLowerCase() + cls.className.slice(1)
@@ -69,7 +68,7 @@ class Plugin extends Module
   opts: {}
 
   constructor: (@widget) ->
-    $.extend(@opts, @widget.opts)
+    @opts = $.extend({}, @opts, @widget.opts)
 
   _init: ->
 
