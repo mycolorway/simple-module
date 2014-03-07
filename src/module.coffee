@@ -58,6 +58,8 @@ class Widget extends Module
 
     instance._init?() for instance in instances
 
+    @trigger 'pluginconnected'
+
   destroy: ->
 
 
