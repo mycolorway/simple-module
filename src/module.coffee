@@ -1,4 +1,3 @@
-
 class Module
 
   @extend: (obj) ->
@@ -49,6 +48,8 @@ class Widget extends Module
   constructor: (opts) ->
     @opts = $.extend({}, @opts, opts)
 
+    @constructor._connectedClasses ||= []
+
     instances = for cls in @constructor._connectedClasses
       name = cls.className.charAt(0).toLowerCase() + cls.className.slice(1)
       @[name] = new cls(@)
@@ -77,4 +78,3 @@ class Plugin extends Module
 window.Module = Module
 window.Widget = Widget
 window.Plugin = Plugin
-
