@@ -38,10 +38,9 @@ class Widget extends Module
       throw new Error 'Widget.connect: lack of class property "className"'
       return
 
-    @::_connectedClasses.push(cls)
+    @_connectedClasses = [] unless @_connectedClasses
+    @_connectedClasses.push(cls)
     @[cls.className] = cls if cls.className
-
-  _connectedClasses: []
 
   _init: ->
 
@@ -50,7 +49,7 @@ class Widget extends Module
   constructor: (opts) ->
     @opts = $.extend({}, @opts, opts)
 
-    instances = for cls in @_connectedClasses
+    instances = for cls in @constructor._connectedClasses
       name = cls.className.charAt(0).toLowerCase() + cls.className.slice(1)
       @[name] = new cls(@)
 
