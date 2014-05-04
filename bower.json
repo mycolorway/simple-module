@@ -15,7 +15,8 @@
     "**/.*",
     "node_modules",
     "vendor",
-		"Gruntfile.coffee",
-		"package.json"
+    "Gruntfile.coffee",
+    "package.json",
+    "README.md"
   ]
 }
