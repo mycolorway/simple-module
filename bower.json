@@ -1,0 +1,19 @@
+{
+  "name": "simple-module",
+  "version": "1.0.0",
+  "homepage": "https://github.com/mycolorway/simple-module",
+  "authors": [
+    "farthinker <farthinker@gmail.com>"
+  ],
+  "description": "A module class that all UI components should inherit from",
+  "main": "lib/module.js",
+  "keywords": [
+    "module"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "vendor"
+  ]
+}
