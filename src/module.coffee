@@ -1,4 +1,3 @@
-
 class Module
 
   @extend: (obj) ->
@@ -33,36 +32,45 @@ class Widget extends Module
 
   @connect: (cls) ->
     return unless typeof cls is 'function'
-    @::_connectedClasses.push(cls)
-    @[cls.className] = cls if cls.className
 
-  _connectedClasses: []
+    unless cls.className
+      throw new Error 'Widget.connect: lack of class property "className"'
+      return
+
+    @_connectedClasses = [] unless @_connectedClasses
+    @_connectedClasses.push(cls)
+    @[cls.className] = cls if cls.className
 
   _init: ->
 
   opts: {}
 
   constructor: (opts) ->
-    $.extend @opts, opts
+    @opts = $.extend({}, @opts, opts)
 
+    @constructor._connectedClasses ||= []
 
-    instances = for cls in @_connectedClasses
-      name = cls.name.charAt(0).toLowerCase() + cls.name.slice(1)
+    instances = for cls in @constructor._connectedClasses
+      name = cls.className.charAt(0).toLowerCase() + cls.className.slice(1)
       @[name] = new cls(@)
 
     @_init()
 
     instance._init?() for instance in instances
 
+    @trigger 'pluginconnected'
+
   destroy: ->
 
 
 class Plugin extends Module
 
+  @className: 'Plugin'
+
   opts: {}
 
   constructor: (@widget) ->
-    $.extend(@opts, @widget.opts)
+    @opts = $.extend({}, @opts, @widget.opts)
 
   _init: ->
 
@@ -70,4 +78,3 @@ class Plugin extends Module
 window.Module = Module
 window.Widget = Widget
 window.Plugin = Plugin
-
