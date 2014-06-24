@@ -27,6 +27,15 @@ class Module
   triggerHandler: (args...) ->
     $(@).triggerHandler args...
 
+  _i18n: (key) ->
+    cls = @constructor
+    cls.i18n[cls.locale]?[key]
+
+  @i18n:
+    'zh-CN': {}
+
+  @locale: 'zh-CN'
+
 
 class Widget extends Module
 
