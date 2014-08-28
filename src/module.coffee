@@ -27,7 +27,7 @@ class Module
   triggerHandler: (args...) ->
     $(@).triggerHandler args...
 
-  _i18n: (key) ->
+  _t: (key) ->
     cls = @constructor
     cls.i18n[cls.locale]?[key]
 
