@@ -13,8 +13,9 @@
   },
   "homepage": "https://github.com/mycolorway/simple-module",
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-coffee": "~0.8.0"
+    "grunt": "~0.x",
+    "grunt-contrib-watch": "~0.x",
+    "grunt-contrib-coffee": "~0.x",
+    "grunt-contrib-jasmine": "~0.x"
   }
 }

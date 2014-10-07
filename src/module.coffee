@@ -12,24 +12,72 @@ class Module
       @::[key] = val
     obj.included?.call(@)
 
+  @connect: (cls) ->
+    return unless typeof cls is 'function'
+
+    unless cls.name
+      throw new Error 'Widget.connect: cannot connect anonymous class'
+      return
+
+    @_connectedClasses = [] unless @_connectedClasses
+    @_connectedClasses.push(cls)
+    @[cls.name] = cls if cls.name
+
+
+  opts: {}
+
+  constructor: (opts) ->
+    @eventDelegate = {}
+    @opts = $.extend({}, @opts, opts)
+
+    @constructor._connectedClasses ||= []
+
+    instances = for cls in @constructor._connectedClasses
+      name = cls.name.charAt(0).toLowerCase() + cls.name.slice(1)
+      @[name] = new cls(@)
+
+    @_init()
+
+    instance._init?() for instance in instances
+
+    @trigger 'initialized'
+
+  _init: ->
+
   on: (args...) ->
-    $(@).on args...
+    $(@eventDelegate).on args...
+    @
 
   one: (args...) ->
-    $(@).one args...
+    $(@eventDelegate).one args...
+    @
 
   off: (args...) ->
-    $(@).off args...
+    $(@eventDelegate).off args...
+    @
 
   trigger: (args...) ->
-    $(@).trigger args...
+    $(@eventDelegate).trigger args...
+    @
 
   triggerHandler: (args...) ->
-    $(@).triggerHandler args...
+    $(@eventDelegate).triggerHandler args...
 
   _t: (key) ->
     cls = @constructor
-    cls.i18n[cls.locale]?[key]
+    result = cls.i18n[cls.locale]?[key]
+
+    return result if arguments.length < 2
+
+    args = Array.prototype.slice.call(arguments, 1)
+
+    result = str.replace /([^%]|^)%(?:(\d+)\$)?s/g, (p0, p, position) ->
+      if position
+        p + args[parseInt(position) - 1]
+      else
+        p + args.shift()
+
+    result.replace /%%s/g, '%s'
 
   @i18n:
     'zh-CN': {}
@@ -37,53 +85,25 @@ class Module
   @locale: 'zh-CN'
 
 
-class Widget extends Module
 
-  @connect: (cls) ->
-    return unless typeof cls is 'function'
-
-    unless cls.className
-      throw new Error 'Widget.connect: lack of class property "className"'
-      return
-
-    @_connectedClasses = [] unless @_connectedClasses
-    @_connectedClasses.push(cls)
-    @[cls.className] = cls if cls.className
-
-  _init: ->
-
-  opts: {}
-
-  constructor: (opts) ->
-    @opts = $.extend({}, @opts, opts)
-
-    @constructor._connectedClasses ||= []
-
-    instances = for cls in @constructor._connectedClasses
-      name = cls.className.charAt(0).toLowerCase() + cls.className.slice(1)
-      @[name] = new cls(@)
-
-    @_init()
-
-    instance._init?() for instance in instances
-
-    @trigger 'pluginconnected'
-
-  destroy: ->
+# monkey patch for IE to support Function.name
+if Function.prototype.name == undefined && Object.defineProperty
+  Object.defineProperty Function.prototype, 'name',
+    get: ->
+      re = /function\s+([^\s(]+)\s*\(/
+      results = re.exec @toString()
+      if (results && results.length > 1) then results[1] else ""
+    set: (val) ->
 
 
-class Plugin extends Module
 
-  @className: 'Plugin'
+if typeof define == 'function' && define.amd
+  # Register as an anonymous module.
+  define [], Module
+else if typeof exports == 'object'
+  # For CommonJS-like environments that support module.exports, like Node.
+  module.exports = Module
+else
+  # Browser globals
+  @SimpleModule = Module
 
-  opts: {}
-
-  constructor: (@widget) ->
-    @opts = $.extend({}, @opts, @widget.opts)
-
-  _init: ->
-
-
-window.Module = Module
-window.Widget = Widget
-window.Plugin = Plugin
