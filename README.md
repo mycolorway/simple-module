@@ -10,7 +10,9 @@ SimpleModule类可以为组件提供这些功能：
 ####动态扩展
 
 `SimpleModule.extend` 可以给组件动态的添加类属性和类方法。
+
 `SimpleModule.include` 可以给组件动态的添加原型属性和原型方法。
+
 `SimpleModule.connect` 可以给组件挂载插件和扩展。
 
 #### 自定义事件
@@ -18,9 +20,13 @@ SimpleModule类可以为组件提供这些功能：
 基于jQuery的自定义事件的实现了这些事件接口：
 
 `module.on 'type', callback` 绑定事件
+
 `module.one 'type', callback` 绑定事件，并在第一次触发之后自动解除绑定
+
 `module.off 'type'` 解绑事件
+
 `module.trigger 'type', [args]` 触发自定义事件
+
 `module.triggerHandler 'type', [args]` 触发自定义事件，并且返回最后一个callback的返回值
 
 #### 简单的本地化支持
