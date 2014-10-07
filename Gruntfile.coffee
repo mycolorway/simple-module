@@ -5,17 +5,40 @@ module.exports = (grunt) ->
     pkg: grunt.file.readJSON 'package.json'
 
     coffee:
-      module:
+      src:
+        options:
+          bare: true
         files:
           'lib/module.js': 'src/module.coffee'
+      spec:
+        files:
           'spec/module-spec.js': 'spec/module-spec.coffee'
+
+    umd:
+      all:
+        src: 'lib/module.js'
+        amdModuleId: 'simple-module'
+        objectToExport: 'Module'
+        globalAlias: 'SimpleModule'
+        deps:
+          'default': ['$']
+          amd: ['jquery']
+          cjs: ['jquery']
+          global:
+            items: ['jQuery']
+            prefix: ''
+
     watch:
-      scripts:
-        files: ['src/**/*.coffee', 'spec/**/*.coffee']
-        tasks: ['coffee']
+      spec:
+        files: ['spec/**/*.coffee']
+        tasks: ['coffee:spec']
+      src:
+        files: ['src/**/*.coffee']
+        tasks: ['coffee:src', 'umd']
       jasmine:
         files: ['lib/**/*.js', 'specs/**/*.js'],
         tasks: 'jasmine:test:build'
+
     jasmine:
       test:
         src: 'lib/**/*.js'
@@ -23,13 +46,14 @@ module.exports = (grunt) ->
           outfile: 'spec/index.html'
           specs: 'spec/module-spec.js'
           vendor: [
-            'vendor/bower/jquery/dist/jquery.js'
+            'vendor/bower/jquery/dist/jquery.min.js'
           ]
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-jasmine'
+  grunt.loadNpmTasks 'grunt-umd'
 
-  grunt.registerTask 'default', ['coffee', 'jasmine:test:build', 'watch']
+  grunt.registerTask 'default', ['coffee', 'umd', 'jasmine:test:build', 'watch']
 
 

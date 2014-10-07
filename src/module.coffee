@@ -96,14 +96,3 @@ if Function.prototype.name == undefined && Object.defineProperty
     set: (val) ->
 
 
-
-if typeof define == 'function' && define.amd
-  # Register as an anonymous module.
-  define [], Module
-else if typeof exports == 'object'
-  # For CommonJS-like environments that support module.exports, like Node.
-  module.exports = Module
-else
-  # Browser globals
-  @SimpleModule = Module
-

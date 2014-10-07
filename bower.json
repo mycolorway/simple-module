@@ -13,7 +13,7 @@
   "license": "MIT",
   "ignore": [
     "**/.*",
-    "spec"
+    "spec",
     "node_modules",
     "vendor",
     "Gruntfile.coffee",
@@ -21,6 +21,6 @@
     "README.md"
   ],
   "dependencies": {
-    "jquery": "~2.x"
+    "jquery": "2.x"
   }
 }

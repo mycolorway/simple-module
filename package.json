@@ -1,21 +1,22 @@
 {
   "name": "simple-module",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "description": "A simple editor designed by mycolorway",
   "repository": {
     "type": "git",
     "url": "git@github.com:mycolorway/simple-module.git"
   },
   "author": "farthinker",
-  "license": "GPL",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/mycolorway/simple-module/issues"
   },
   "homepage": "https://github.com/mycolorway/simple-module",
   "devDependencies": {
-    "grunt": "~0.x",
-    "grunt-contrib-watch": "~0.x",
-    "grunt-contrib-coffee": "~0.x",
-    "grunt-contrib-jasmine": "~0.x"
+    "grunt": "0.x",
+    "grunt-contrib-watch": "0.x",
+    "grunt-contrib-coffee": "0.x",
+    "grunt-contrib-jasmine": "0.x",
+    "grunt-umd": "2.x"
   }
 }
