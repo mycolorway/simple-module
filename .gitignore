@@ -16,6 +16,7 @@ node_modules
 
 .DS_Store
 .sass-cache
+.grunt
 vendor/module
 vendor/bower
 

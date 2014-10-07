@@ -5,17 +5,15 @@ Simple Module是一个CoffeeScript抽象类，彩程的前端UI库都基于这�
 
 依赖jQuery 2.0+，支持：IE10+、Firefox、Chrome、Safari。
 
-###SimpleModule类
+SimpleModule类可以为组件提供这些功能：
 
-SimpleModule类主要为组件提供这些功能：
-
-1. 动态扩展
+####动态扩展
 
 `SimpleModule.extend` 可以给组件动态的添加类属性和类方法。
 `SimpleModule.include` 可以给组件动态的添加原型属性和原型方法。
 `SimpleModule.connect` 可以给组件挂载插件和扩展。
 
-2. 自定义事件
+#### 自定义事件
 
 基于jQuery的自定义事件的实现了这些事件接口：
 
@@ -25,7 +23,7 @@ SimpleModule类主要为组件提供这些功能：
 `module.trigger 'type', [args]` 触发自定义事件
 `module.triggerHandler 'type', [args]` 触发自定义事件，并且返回最后一个callback的返回值
 
-3. 简单的本地化支持
+#### 简单的本地化支持
 
 `Module.i18n` 对象用来存放本地化资源（键值对），例如：
 
