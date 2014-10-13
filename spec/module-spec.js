@@ -59,7 +59,8 @@
         }
       });
       testModule = new TestModule();
-      return expect(testModule._t('hello', 'farthinker')).toBe('你好，farthinker!');
+      expect(testModule._t('hello', 'farthinker')).toBe('你好，farthinker!');
+      return expect(TestModule._t('hello', 'farthinker')).toBe('你好，farthinker!');
     });
   });
 

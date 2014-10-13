@@ -63,13 +63,13 @@ class Module
   triggerHandler: (args...) ->
     $(@eventDelegate).triggerHandler args...
 
-  _t: (key) ->
-    cls = @constructor
-    result = cls.i18n[cls.locale]?[key]
+  _t: (args...) ->
+    @constructor._t args...
 
-    return result if arguments.length < 2
+  @_t: (key, args...) ->
+    result = @i18n[@locale]?[key]
 
-    args = Array.prototype.slice.call(arguments, 1)
+    return result unless args.length > 0
 
     result = result.replace /([^%]|^)%(?:(\d+)\$)?s/g, (p0, p, position) ->
       if position

@@ -30,5 +30,6 @@ describe 'Simple Module', ->
         'hello': '你好，%s!'
     testModule = new TestModule()
     expect(testModule._t('hello', 'farthinker')).toBe('你好，farthinker!')
+    expect(TestModule._t('hello', 'farthinker')).toBe('你好，farthinker!')
 
 
