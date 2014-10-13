@@ -71,7 +71,7 @@ class Module
 
     args = Array.prototype.slice.call(arguments, 1)
 
-    result = str.replace /([^%]|^)%(?:(\d+)\$)?s/g, (p0, p, position) ->
+    result = result.replace /([^%]|^)%(?:(\d+)\$)?s/g, (p0, p, position) ->
       if position
         p + args[parseInt(position) - 1]
       else

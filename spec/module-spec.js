@@ -33,7 +33,7 @@
       testModule = new TestModule();
       return expect(testModule.includeVar).toBe(true);
     });
-    return it('can connect other class', function() {
+    it('can connect other class', function() {
       var TestPlugin, testModule, _ref;
       TestPlugin = (function(_super) {
         __extends(TestPlugin, _super);
@@ -50,6 +50,16 @@
       testModule = new TestModule();
       expect((_ref = testModule.testPlugin) != null ? _ref.constructor : void 0).toBeDefined();
       return expect(testModule.testPlugin.constructor).toBe(TestPlugin);
+    });
+    return it('should translate i18n key', function() {
+      var testModule;
+      $.extend(TestModule.i18n, {
+        'zh-CN': {
+          'hello': '你好，%s!'
+        }
+      });
+      testModule = new TestModule();
+      return expect(testModule._t('hello', 'farthinker')).toBe('你好，farthinker!');
     });
   });
 

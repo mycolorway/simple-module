@@ -24,4 +24,11 @@ describe 'Simple Module', ->
     expect(testModule.testPlugin?.constructor).toBeDefined()
     expect(testModule.testPlugin.constructor).toBe(TestPlugin)
 
+  it 'should translate i18n key', ->
+    $.extend TestModule.i18n,
+      'zh-CN':
+        'hello': '你好，%s!'
+    testModule = new TestModule()
+    expect(testModule._t('hello', 'farthinker')).toBe('你好，farthinker!')
+
 
