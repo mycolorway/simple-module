@@ -34,7 +34,8 @@ class Module
 
     instances = for cls in @constructor._connectedClasses
       name = cls.name.charAt(0).toLowerCase() + cls.name.slice(1)
-      @[name] = new cls(@)
+      @[name] = new cls()
+      @[name]._module = @
 
     @_init()
 
