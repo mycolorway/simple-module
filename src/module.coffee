@@ -19,6 +19,7 @@ class Module
       throw new Error 'Widget.connect: cannot connect anonymous class'
       return
 
+    cls::_connected = true
     @_connectedClasses = [] unless @_connectedClasses
     @_connectedClasses.push(cls)
     @[cls.name] = cls if cls.name
@@ -34,8 +35,8 @@ class Module
 
     instances = for cls in @constructor._connectedClasses
       name = cls.name.charAt(0).toLowerCase() + cls.name.slice(1)
+      cls::_module = @ if cls::_connected
       @[name] = new cls()
-      @[name]._module = @
 
     @_init()
 

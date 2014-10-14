@@ -21,8 +21,9 @@ describe 'Simple Module', ->
     class TestPlugin extends SimpleModule
       TestModule.connect TestPlugin
     testModule = new TestModule()
-    expect(testModule.testPlugin?.constructor).toBeDefined()
     expect(testModule.testPlugin.constructor).toBe(TestPlugin)
+    expect(testModule.testPlugin._connected).toBe(true)
+    expect(testModule.testPlugin._module).toBe(testModule)
 
   it 'should translate i18n key', ->
     $.extend TestModule.i18n,

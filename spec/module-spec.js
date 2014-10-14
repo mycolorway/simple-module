@@ -34,7 +34,7 @@
       return expect(testModule.includeVar).toBe(true);
     });
     it('can connect other class', function() {
-      var TestPlugin, testModule, _ref;
+      var TestPlugin, testModule;
       TestPlugin = (function(_super) {
         __extends(TestPlugin, _super);
 
@@ -48,8 +48,9 @@
 
       })(SimpleModule);
       testModule = new TestModule();
-      expect((_ref = testModule.testPlugin) != null ? _ref.constructor : void 0).toBeDefined();
-      return expect(testModule.testPlugin.constructor).toBe(TestPlugin);
+      expect(testModule.testPlugin.constructor).toBe(TestPlugin);
+      expect(testModule.testPlugin._connected).toBe(true);
+      return expect(testModule.testPlugin._module).toBe(testModule);
     });
     return it('should translate i18n key', function() {
       var testModule;
