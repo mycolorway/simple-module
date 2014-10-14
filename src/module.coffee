@@ -71,7 +71,7 @@ class Module
     @constructor._t args...
 
   @_t: (key, args...) ->
-    result = @i18n[@locale]?[key]
+    result = @i18n[@locale]?[key] || ''
 
     return result unless args.length > 0
 
