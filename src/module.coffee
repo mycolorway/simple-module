@@ -39,7 +39,7 @@ class Module
       @[name] = new cls()
 
     if @_connected
-      @opts = $.extend @_module.opts, @opts
+      @opts = $.extend {}, @opts, @_module.opts
     else
       @_init()
       instance._init?() for instance in instances
