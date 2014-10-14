@@ -38,7 +38,7 @@ class Module
       cls::_module = @ if cls::_connected
       @[name] = new cls()
 
-    @_init()
+    @_init() unless @_connected
 
     instance._init?() for instance in instances
 
