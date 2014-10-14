@@ -11,6 +11,10 @@
         return TestModule.__super__.constructor.apply(this, arguments);
       }
 
+      TestModule.prototype.opts = {
+        moduleName: 'Test Module'
+      };
+
       return TestModule;
 
     })(SimpleModule);
@@ -54,7 +58,8 @@
       expect(testModule.testPlugin.constructor).toBe(TestPlugin);
       expect(testModule.testPlugin._connected).toBe(true);
       expect(testModule.testPlugin._module).toBe(testModule);
-      return expect(testModule.opts.pluginName).toBe('Test Plugin');
+      expect(testModule.opts.pluginName).toBe('Test Plugin');
+      return expect(pluginName.opts.moduleName).toBe('Test Module');
     });
     return it('should translate i18n key', function() {
       var testModule;
