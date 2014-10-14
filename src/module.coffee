@@ -38,9 +38,11 @@ class Module
       cls::_module = @ if cls::_connected
       @[name] = new cls()
 
-    @_init() unless @_connected
-
-    instance._init?() for instance in instances
+    if @_connected
+      $.extend @_module.opts, @opts
+    else
+      @_init()
+      instance._init?() for instance in instances
 
     @trigger 'initialized'
 

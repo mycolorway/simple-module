@@ -19,11 +19,14 @@ describe 'Simple Module', ->
 
   it 'can connect other class', ->
     class TestPlugin extends SimpleModule
-      TestModule.connect TestPlugin
-    testModule = new TestModule()
+      opts:
+        pluginName: 'Test Plugin'
+    TestModule.connect TestPlugin
+    testModule = new TestModule
     expect(testModule.testPlugin.constructor).toBe(TestPlugin)
     expect(testModule.testPlugin._connected).toBe(true)
     expect(testModule.testPlugin._module).toBe(testModule)
+    expect(testModule.opts.pluginName).toBe('Test Plugin')
 
   it 'should translate i18n key', ->
     $.extend TestModule.i18n,

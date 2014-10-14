@@ -42,15 +42,19 @@
           return TestPlugin.__super__.constructor.apply(this, arguments);
         }
 
-        TestModule.connect(TestPlugin);
+        TestPlugin.prototype.opts = {
+          pluginName: 'Test Plugin'
+        };
 
         return TestPlugin;
 
       })(SimpleModule);
-      testModule = new TestModule();
+      TestModule.connect(TestPlugin);
+      testModule = new TestModule;
       expect(testModule.testPlugin.constructor).toBe(TestPlugin);
       expect(testModule.testPlugin._connected).toBe(true);
-      return expect(testModule.testPlugin._module).toBe(testModule);
+      expect(testModule.testPlugin._module).toBe(testModule);
+      return expect(testModule.opts.pluginName).toBe('Test Plugin');
     });
     return it('should translate i18n key', function() {
       var testModule;
