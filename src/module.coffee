@@ -28,7 +28,6 @@ class Module
   opts: {}
 
   constructor: (opts) ->
-    @eventDelegate = {}
     @opts = $.extend({}, @opts, opts)
 
     @constructor._connectedClasses ||= []
@@ -49,23 +48,23 @@ class Module
   _init: ->
 
   on: (args...) ->
-    $(@eventDelegate).on args...
+    $(@).on args...
     @
 
   one: (args...) ->
-    $(@eventDelegate).one args...
+    $(@).one args...
     @
 
   off: (args...) ->
-    $(@eventDelegate).off args...
+    $(@).off args...
     @
 
   trigger: (args...) ->
-    $(@eventDelegate).trigger args...
+    $(@).trigger args...
     @
 
   triggerHandler: (args...) ->
-    $(@eventDelegate).triggerHandler args...
+    $(@).triggerHandler args...
 
   _t: (args...) ->
     @constructor._t args...

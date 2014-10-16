@@ -28,8 +28,7 @@ describe 'Simple Module', ->
     expect(testModule.testPlugin.constructor).toBe(TestPlugin)
     expect(testModule.testPlugin._connected).toBe(true)
     expect(testModule.testPlugin._module).toBe(testModule)
-    expect(testModule.opts.pluginName).toBe('Test Plugin')
-    expect(pluginName.opts.moduleName).toBe('Test Module')
+    expect(testModule.testPlugin.opts.moduleName).toBe('Test Module')
 
   it 'should translate i18n key', ->
     $.extend TestModule.i18n,

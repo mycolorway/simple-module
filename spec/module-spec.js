@@ -58,8 +58,7 @@
       expect(testModule.testPlugin.constructor).toBe(TestPlugin);
       expect(testModule.testPlugin._connected).toBe(true);
       expect(testModule.testPlugin._module).toBe(testModule);
-      expect(testModule.opts.pluginName).toBe('Test Plugin');
-      return expect(pluginName.opts.moduleName).toBe('Test Module');
+      return expect(testModule.testPlugin.opts.moduleName).toBe('Test Module');
     });
     return it('should translate i18n key', function() {
       var testModule;
