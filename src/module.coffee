@@ -12,17 +12,17 @@ class Module
       @::[key] = val
     obj.included?.call(@)
 
-  @connect: (cls) ->
+  @connect: (name, cls) ->
     return unless typeof cls is 'function'
 
-    unless cls.name
-      throw new Error 'Widget.connect: cannot connect anonymous class'
+    unless cls.pluginName
+      throw new Error 'Module.connect: cannot connect plugin without pluginName'
       return
 
     cls::_connected = true
     @_connectedClasses = [] unless @_connectedClasses
     @_connectedClasses.push(cls)
-    @[cls.name] = cls if cls.name
+    @[cls.pluginName] = cls if cls.pluginName
 
 
   opts: {}
@@ -33,7 +33,7 @@ class Module
     @constructor._connectedClasses ||= []
 
     instances = for cls in @constructor._connectedClasses
-      name = cls.name.charAt(0).toLowerCase() + cls.name.slice(1)
+      name = cls.pluginName.charAt(0).toLowerCase() + cls.pluginName.slice(1)
       cls::_module = @ if cls::_connected
       @[name] = new cls()
 
@@ -86,16 +86,5 @@ class Module
     'zh-CN': {}
 
   @locale: 'zh-CN'
-
-
-
-# monkey patch for IE to support Function.name
-if Function.prototype.name == undefined && Object.defineProperty
-  Object.defineProperty Function.prototype, 'name',
-    get: ->
-      re = /function\s+([^\s(]+)\s*\(/
-      results = re.exec @toString()
-      if (results && results.length > 1) then results[1] else ""
-    set: (val) ->
 
 
