@@ -12,7 +12,7 @@ class Module
       @::[key] = val
     obj.included?.call(@)
 
-  @connect: (name, cls) ->
+  @connect: (cls) ->
     return unless typeof cls is 'function'
 
     unless cls.pluginName
