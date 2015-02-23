@@ -1,5 +1,5 @@
 {
-  "name": "simple-module",
+  "name": "simplemodule",
   "version": "2.0.4",
   "description": "A abstract class for module and UI widget.",
   "repository": {
