@@ -18,7 +18,7 @@ module.exports = (grunt) ->
       all:
         src: 'lib/module.js'
         amdModuleId: 'simple-module'
-        objectToExport: 'Module'
+        objectToExport: 'SimpleModule'
         globalAlias: 'SimpleModule'
         deps:
           'default': ['$']

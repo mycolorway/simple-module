@@ -1,11 +1,11 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
   describe('Simple Module', function() {
     var TestModule;
-    TestModule = (function(_super) {
-      __extends(TestModule, _super);
+    TestModule = (function(superClass) {
+      extend(TestModule, superClass);
 
       function TestModule() {
         return TestModule.__super__.constructor.apply(this, arguments);
@@ -39,8 +39,8 @@
     });
     it('can connect other class', function() {
       var TestPlugin, testModule;
-      TestPlugin = (function(_super) {
-        __extends(TestPlugin, _super);
+      TestPlugin = (function(superClass) {
+        extend(TestPlugin, superClass);
 
         function TestPlugin() {
           return TestPlugin.__super__.constructor.apply(this, arguments);
