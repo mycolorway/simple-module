@@ -1,7 +1,7 @@
 {
   "name": "simple-module",
   "version": "2.0.4",
-  "description": "A simple editor designed by mycolorway",
+  "description": "A abstract class for module and UI widget.",
   "repository": {
     "type": "git",
     "url": "git@github.com:mycolorway/simple-module.git"
@@ -12,6 +12,10 @@
     "url": "https://github.com/mycolorway/simple-module/issues"
   },
   "homepage": "https://github.com/mycolorway/simple-module",
+  "main": "lib/module.js",
+  "dependencies": {
+    "jquery": "2.x"
+  },
   "devDependencies": {
     "grunt": "0.x",
     "grunt-contrib-watch": "0.x",
