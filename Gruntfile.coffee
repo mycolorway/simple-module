@@ -18,7 +18,7 @@ module.exports = (grunt) ->
       all:
         src: 'lib/module.js'
         amdModuleId: 'simple-module'
-        objectToExport: 'SimpleModule'
+        objectToExport: 'Module'
         globalAlias: 'SimpleModule'
         deps:
           'default': ['$']
@@ -55,5 +55,3 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-umd'
 
   grunt.registerTask 'default', ['coffee', 'umd', 'jasmine:test:build', 'watch']
-
-
