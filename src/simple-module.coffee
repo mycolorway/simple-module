@@ -1,31 +1,58 @@
-class Module
+# {SimpleModule} provides mixins, plugin mechanism and event emitter for subclasses.
+class SimpleModule
 
+  # Add properties to {SimpleModule} class.
+  #
+  # @param [Object] obj The properties of {obj} will be copied to {SimpleModule},
+  #   except property named `extended`, which is a function that will be called
+  #   after copy operation.
+  #
   @extend: (obj) ->
-    return unless obj? and typeof obj is 'object'
-    for key, val of obj when key not in ['included', 'extended']
-      @[key] = val
-    obj.extended?.call(@)
-
-  @include: (obj) ->
-    return unless obj? and typeof obj is 'object'
-    for key, val of obj when key not in ['included', 'extended']
-      @::[key] = val
-    obj.included?.call(@)
-
-  @connect: (cls) ->
-    return unless typeof cls is 'function'
-
-    unless cls.pluginName
-      throw new Error 'Module.connect: cannot connect plugin without pluginName'
+    unless obj and typeof(obj) == 'object'
+      throw new Error('SimpleModule.extend: param should be an object')
       return
 
-    cls::_connected = true
-    @_connectedClasses = [] unless @_connectedClasses
-    @_connectedClasses.push(cls)
-    @[cls.pluginName] = cls if cls.pluginName
+    for key, val of obj when key not in ['included', 'extended']
+      @[key] = val
 
+    obj.extended?.call(@)
+    @
 
-  opts: {}
+  # Add properties to instance of {SimpleModule} class.
+  #
+  # @param [Hash] obj The properties of {obj} will be copied to prototype of
+  #   {SimpleModule}, except property named `included`, which is a function that
+  #   will be called after copy operation.
+  #
+  @include: (obj) ->
+    unless obj and typeof(obj) == 'object'
+      throw new Error('SimpleModule.include: param should be an object')
+      return
+
+    for key, val of obj when key not in ['included', 'extended']
+      @::[key] = val
+
+    obj.included?.call(@)
+    @
+
+  # @property [Hash] The registered plugins.
+  @plugins: {}
+
+  @plugin: (name, cls) ->
+    unless name and typeof name == 'string'
+      throw new Error('SimpleModule.plugin: first param should be a string')
+      return
+
+    unless typeof cls == 'function'
+      throw new Error('SimpleModule.plugin: second param should be a class reference')
+      return
+
+    @plugins[name] = cls
+
+  # Default options
+  opts: {
+    plugins: []
+  }
 
   constructor: (opts) ->
     @opts = $.extend({}, @opts, opts)
@@ -87,4 +114,4 @@ class Module
 
   @locale: 'zh-CN'
 
-
+module.exports = SimpleModule

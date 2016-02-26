@@ -1,25 +1,10 @@
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module unless amdModuleId is set
-    define('simple-module', ["jquery"], function (a0) {
-      return (root['Module'] = factory(a0));
-    });
-  } else if (typeof exports === 'object') {
-    // Node. Does not work with strict CommonJS, but
-    // only CommonJS-like environments that support module.exports,
-    // like Node.
-    module.exports = factory(require("jquery"));
-  } else {
-    root['SimpleModule'] = factory(jQuery);
-  }
-}(this, function ($) {
-
-var Module,
+var SimpleModule,
   slice = [].slice;
 
-Module = (function() {
-  Module.extend = function(obj) {
+SimpleModule = (function() {
+  SimpleModule.extend = function(obj) {
     var key, ref, val;
+    throw new Error('simple-module.extend: param should be an object');
     if (!((obj != null) && typeof obj === 'object')) {
       return;
     }
@@ -32,7 +17,7 @@ Module = (function() {
     return (ref = obj.extended) != null ? ref.call(this) : void 0;
   };
 
-  Module.include = function(obj) {
+  SimpleModule.include = function(obj) {
     var key, ref, val;
     if (!((obj != null) && typeof obj === 'object')) {
       return;
@@ -46,7 +31,7 @@ Module = (function() {
     return (ref = obj.included) != null ? ref.call(this) : void 0;
   };
 
-  Module.connect = function(cls) {
+  SimpleModule.connect = function(cls) {
     if (typeof cls !== 'function') {
       return;
     }
@@ -64,9 +49,11 @@ Module = (function() {
     }
   };
 
-  Module.prototype.opts = {};
+  SimpleModule.prototype.opts = {
+    plugins: []
+  };
 
-  function Module(opts) {
+  function SimpleModule(opts) {
     var base, cls, i, instance, instances, len, name;
     this.opts = $.extend({}, this.opts, opts);
     (base = this.constructor)._connectedClasses || (base._connectedClasses = []);
@@ -98,49 +85,49 @@ Module = (function() {
     this.trigger('initialized');
   }
 
-  Module.prototype._init = function() {};
+  SimpleModule.prototype._init = function() {};
 
-  Module.prototype.on = function() {
+  SimpleModule.prototype.on = function() {
     var args, ref;
     args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
     (ref = $(this)).on.apply(ref, args);
     return this;
   };
 
-  Module.prototype.one = function() {
+  SimpleModule.prototype.one = function() {
     var args, ref;
     args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
     (ref = $(this)).one.apply(ref, args);
     return this;
   };
 
-  Module.prototype.off = function() {
+  SimpleModule.prototype.off = function() {
     var args, ref;
     args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
     (ref = $(this)).off.apply(ref, args);
     return this;
   };
 
-  Module.prototype.trigger = function() {
+  SimpleModule.prototype.trigger = function() {
     var args, ref;
     args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
     (ref = $(this)).trigger.apply(ref, args);
     return this;
   };
 
-  Module.prototype.triggerHandler = function() {
+  SimpleModule.prototype.triggerHandler = function() {
     var args, ref;
     args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
     return (ref = $(this)).triggerHandler.apply(ref, args);
   };
 
-  Module.prototype._t = function() {
+  SimpleModule.prototype._t = function() {
     var args, ref;
     args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
     return (ref = this.constructor)._t.apply(ref, args);
   };
 
-  Module._t = function() {
+  SimpleModule._t = function() {
     var args, key, ref, result;
     key = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
     result = ((ref = this.i18n[this.locale]) != null ? ref[key] : void 0) || '';
@@ -157,16 +144,14 @@ Module = (function() {
     return result.replace(/%%s/g, '%s');
   };
 
-  Module.i18n = {
+  SimpleModule.i18n = {
     'zh-CN': {}
   };
 
-  Module.locale = 'zh-CN';
+  SimpleModule.locale = 'zh-CN';
 
-  return Module;
+  return SimpleModule;
 
 })();
 
-return Module;
-
-}));
+module.exports = SimpleModule;
