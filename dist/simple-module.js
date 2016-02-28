@@ -1,11 +1,19 @@
-var SimpleModule,
+var EventEmitter, SimpleModule, _,
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty,
   slice = [].slice;
 
-SimpleModule = (function() {
+EventEmitter = require('eventemitter2');
+
+_ = require('lodash');
+
+SimpleModule = (function(superClass) {
+  extend(SimpleModule, superClass);
+
   SimpleModule.extend = function(obj) {
     var key, ref, val;
-    throw new Error('simple-module.extend: param should be an object');
-    if (!((obj != null) && typeof obj === 'object')) {
+    if (!(obj && typeof obj === 'object')) {
+      throw new Error('SimpleModule.extend: param should be an object');
       return;
     }
     for (key in obj) {
@@ -14,12 +22,16 @@ SimpleModule = (function() {
         this[key] = val;
       }
     }
-    return (ref = obj.extended) != null ? ref.call(this) : void 0;
+    if ((ref = obj.extended) != null) {
+      ref.call(this);
+    }
+    return this;
   };
 
   SimpleModule.include = function(obj) {
     var key, ref, val;
-    if (!((obj != null) && typeof obj === 'object')) {
+    if (!(obj && typeof obj === 'object')) {
+      throw new Error('SimpleModule.include: param should be an object');
       return;
     }
     for (key in obj) {
@@ -28,130 +40,62 @@ SimpleModule = (function() {
         this.prototype[key] = val;
       }
     }
-    return (ref = obj.included) != null ? ref.call(this) : void 0;
+    if ((ref = obj.included) != null) {
+      ref.call(this);
+    }
+    return this;
   };
 
-  SimpleModule.connect = function(cls) {
+  SimpleModule.plugins = {};
+
+  SimpleModule.plugin = function(name, cls) {
+    if (!(name && typeof name === 'string')) {
+      throw new Error('SimpleModule.plugin: first param should be a string');
+      return;
+    }
     if (typeof cls !== 'function') {
+      throw new Error('SimpleModule.plugin: second param should be a class reference');
       return;
     }
-    if (!cls.pluginName) {
-      throw new Error('Module.connect: cannot connect plugin without pluginName');
-      return;
-    }
-    cls.prototype._connected = true;
-    if (!this._connectedClasses) {
-      this._connectedClasses = [];
-    }
-    this._connectedClasses.push(cls);
-    if (cls.pluginName) {
-      return this[cls.pluginName] = cls;
-    }
+    return this.plugins[name] = cls;
   };
 
   SimpleModule.prototype.opts = {
     plugins: []
   };
 
+  SimpleModule.prototype.plugins = {};
+
   function SimpleModule(opts) {
-    var base, cls, i, instance, instances, len, name;
-    this.opts = $.extend({}, this.opts, opts);
-    (base = this.constructor)._connectedClasses || (base._connectedClasses = []);
-    instances = (function() {
-      var i, len, ref, results;
-      ref = this.constructor._connectedClasses;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        cls = ref[i];
-        name = cls.pluginName.charAt(0).toLowerCase() + cls.pluginName.slice(1);
-        if (cls.prototype._connected) {
-          cls.prototype._module = this;
-        }
-        results.push(this[name] = new cls());
-      }
-      return results;
-    }).call(this);
-    if (this._connected) {
-      this.opts = $.extend({}, this.opts, this._module.opts);
-    } else {
-      this._init();
-      for (i = 0, len = instances.length; i < len; i++) {
-        instance = instances[i];
-        if (typeof instance._init === "function") {
-          instance._init();
-        }
-      }
-    }
-    this.trigger('initialized');
+    _.extend(this.opts, opts);
+    this.opts.plugins.forEach((function(_this) {
+      return function(name) {
+        return _this.plugins[name] = new _this.constructor.plugins[name](_this);
+      };
+    })(this));
+    this;
   }
 
-  SimpleModule.prototype._init = function() {};
-
-  SimpleModule.prototype.on = function() {
-    var args, ref;
-    args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    (ref = $(this)).on.apply(ref, args);
-    return this;
-  };
-
   SimpleModule.prototype.one = function() {
-    var args, ref;
+    var args;
     args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    (ref = $(this)).one.apply(ref, args);
-    return this;
-  };
-
-  SimpleModule.prototype.off = function() {
-    var args, ref;
-    args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    (ref = $(this)).off.apply(ref, args);
-    return this;
+    return this.once.apply(this, args);
   };
 
   SimpleModule.prototype.trigger = function() {
-    var args, ref;
+    var args;
     args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    (ref = $(this)).trigger.apply(ref, args);
-    return this;
+    return this.emit.apply(this, args);
   };
 
-  SimpleModule.prototype.triggerHandler = function() {
-    var args, ref;
+  SimpleModule.prototype.triggerAsync = function() {
+    var args;
     args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    return (ref = $(this)).triggerHandler.apply(ref, args);
+    return this.emitAsync.apply(this, args);
   };
-
-  SimpleModule.prototype._t = function() {
-    var args, ref;
-    args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    return (ref = this.constructor)._t.apply(ref, args);
-  };
-
-  SimpleModule._t = function() {
-    var args, key, ref, result;
-    key = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-    result = ((ref = this.i18n[this.locale]) != null ? ref[key] : void 0) || '';
-    if (!(args.length > 0)) {
-      return result;
-    }
-    result = result.replace(/([^%]|^)%(?:(\d+)\$)?s/g, function(p0, p, position) {
-      if (position) {
-        return p + args[parseInt(position) - 1];
-      } else {
-        return p + args.shift();
-      }
-    });
-    return result.replace(/%%s/g, '%s');
-  };
-
-  SimpleModule.i18n = {
-    'zh-CN': {}
-  };
-
-  SimpleModule.locale = 'zh-CN';
 
   return SimpleModule;
 
-})();
+})(EventEmitter);
 
 module.exports = SimpleModule;

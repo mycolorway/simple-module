@@ -1,5 +1,8 @@
+EventEmitter = require 'eventemitter2'
+_            = require 'lodash'
+
 # {SimpleModule} provides mixins, plugin mechanism and event emitter for subclasses.
-class SimpleModule
+class SimpleModule extends EventEmitter
 
   # Add properties to {SimpleModule} class.
   #
@@ -8,7 +11,7 @@ class SimpleModule
   #   after copy operation.
   #
   @extend: (obj) ->
-    unless obj and typeof(obj) == 'object'
+    unless obj and typeof obj == 'object'
       throw new Error('SimpleModule.extend: param should be an object')
       return
 
@@ -25,7 +28,7 @@ class SimpleModule
   #   will be called after copy operation.
   #
   @include: (obj) ->
-    unless obj and typeof(obj) == 'object'
+    unless obj and typeof obj == 'object'
       throw new Error('SimpleModule.include: param should be an object')
       return
 
@@ -38,6 +41,11 @@ class SimpleModule
   # @property [Hash] The registered plugins.
   @plugins: {}
 
+  # Register plugin for {SimpleModule}
+  #
+  # @param [String] name The name of plugin.
+  # @param [Function] cls The class of plugin.
+  #
   @plugin: (name, cls) ->
     unless name and typeof name == 'string'
       throw new Error('SimpleModule.plugin: first param should be a string')
@@ -49,69 +57,33 @@ class SimpleModule
 
     @plugins[name] = cls
 
-  # Default options
   opts: {
     plugins: []
   }
 
+  plugins: {}
+
+  # Create a new instance of {SimpleModule}
+  #
+  # @param [Hash] opts The options for initialization.
+  #
+  # @return The new instance.
   constructor: (opts) ->
-    @opts = $.extend({}, @opts, opts)
+    _.extend @opts, opts
 
-    @constructor._connectedClasses ||= []
+    @opts.plugins.forEach (name) =>
+      @plugins[name] = new @constructor.plugins[name](@)
 
-    instances = for cls in @constructor._connectedClasses
-      name = cls.pluginName.charAt(0).toLowerCase() + cls.pluginName.slice(1)
-      cls::_module = @ if cls::_connected
-      @[name] = new cls()
-
-    if @_connected
-      @opts = $.extend {}, @opts, @_module.opts
-    else
-      @_init()
-      instance._init?() for instance in instances
-
-    @trigger 'initialized'
-
-  _init: ->
-
-  on: (args...) ->
-    $(@).on args...
     @
 
   one: (args...) ->
-    $(@).one args...
-    @
-
-  off: (args...) ->
-    $(@).off args...
-    @
+    @once args...
 
   trigger: (args...) ->
-    $(@).trigger args...
-    @
+    @emit args...
 
-  triggerHandler: (args...) ->
-    $(@).triggerHandler args...
+  triggerAsync: (args...) ->
+    @emitAsync args...
 
-  _t: (args...) ->
-    @constructor._t args...
-
-  @_t: (key, args...) ->
-    result = @i18n[@locale]?[key] || ''
-
-    return result unless args.length > 0
-
-    result = result.replace /([^%]|^)%(?:(\d+)\$)?s/g, (p0, p, position) ->
-      if position
-        p + args[parseInt(position) - 1]
-      else
-        p + args.shift()
-
-    result.replace /%%s/g, '%s'
-
-  @i18n:
-    'zh-CN': {}
-
-  @locale: 'zh-CN'
 
 module.exports = SimpleModule
