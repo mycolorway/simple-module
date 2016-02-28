@@ -85,9 +85,3 @@ Install via bower:
 ```bash
 bower install --save simple-module
 ```
-
-Or download source code from [Releases](https://github.com/mycolorway/simple-module/releases) and reference bundle file in you project:
-
-```html
-<script src="[path]/simple-module-bundle.js.min"></script>
-```
