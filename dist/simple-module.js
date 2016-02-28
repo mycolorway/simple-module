@@ -1,3 +1,14 @@
+/**
+ * simple-module v3.0.0
+ * http://mycolorway.github.io/simple-module
+ * 
+ * Copyright Mycolorway Design
+ * Released under the MIT license
+ * http://mycolorway.github.io/simple-module/license
+ * 
+ * Date: 2/29/2016, 12:06:12 AM
+ */
+
 var EventEmitter, SimpleModule, _,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty,
