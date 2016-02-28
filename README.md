@@ -2,7 +2,7 @@
 
 SimpleModule is a simple base class providing these features for subclasses:
 
-### Event Emitter
+#### Event Emitter
 
 SimpleModule inherits from [EventEmitter2](https://github.com/asyncly/EventEmitter2) which is an advanced version of Node.js default [EventEmitter](https://nodejs.org/api/events.html). EventEmitter2 provides event namespaces and wildcards:
 
@@ -24,7 +24,7 @@ module.trigger('customEvent', 'data string');
 module.emit('customEvent', 'data string');
 ```
 
-### Mixins
+#### Mixins
 
 Add class properties and methods to SimpleModule:
 
@@ -48,7 +48,7 @@ var testMixins = {
 SimpleModule.include(testMixins);
 ```
 
-### Plugins
+#### Plugins
 
 Register a plugin on SimpleModule:
 
@@ -80,14 +80,14 @@ Install via npm:
 npm install --save simple-module
 ```
 
-Or install via bower:
+Install via bower:
 
 ```bash
 bower install --save simple-module
 ```
 
-Or download source code from [Releases](https://github.com/mycolorway/simple-module/releases) and reference bundled file in you project:
+Or download source code from [Releases](https://github.com/mycolorway/simple-module/releases) and reference bundle file in you project:
 
 ```html
-<script src="[path]/simple-module-bundled.js.min"></script>
+<script src="[path]/simple-module-bundle.js.min"></script>
 ```

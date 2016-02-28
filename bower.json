@@ -1,0 +1,26 @@
+{
+  "name": "simple-module",
+  "version": "3.0.0",
+  "homepage": "https://github.com/mycolorway/simple-module",
+  "authors": [
+    "farthinker <farthinker@gmail.com>"
+  ],
+  "description": "A simple base class for js modules.",
+  "main": "dist/simple-module-bundle.js",
+  "keywords": [
+    "module",
+    "simple"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "test",
+    "build",
+    "gulpfile.coffee",
+    "package.json"
+  ],
+  "dependencies": {
+    "eventemitter2": "^1.0.0",
+    "lodash": "^4.5.1"
+  }
+}

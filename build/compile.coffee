@@ -8,7 +8,7 @@ pkg = require '../package.json'
 
 gulp.task 'compile.coffee', (cb) ->
   gulp.src 'src/**/*.coffee'
-    .pipe coffee(bare: true).on('error', gutil.log)
+    .pipe coffee().on('error', gutil.log)
     .pipe header(pkg.banner.join('\n'), {
       pkg: pkg,
       date: (new Date()).toLocaleString('en-US')

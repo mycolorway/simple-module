@@ -1,5 +1,9 @@
-EventEmitter = require 'eventemitter2'
-_            = require 'lodash'
+if (isNode = typeof module == 'object' and module.exports)
+  EventEmitter = require 'eventemitter2'
+  _            = require 'lodash'
+else
+  EventEmitter = window.EventEmitter2
+  _            = window._
 
 # {SimpleModule} provides mixins, plugin mechanism and event emitter for subclasses.
 class SimpleModule extends EventEmitter
@@ -86,4 +90,4 @@ class SimpleModule extends EventEmitter
     @emitAsync args...
 
 
-module.exports = SimpleModule
+module.exports = SimpleModule if isNode
