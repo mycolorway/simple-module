@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/simple-module/license
  * 
- * Date: 2/29/2016, 1:10:39 AM
+ * Date: 3/2/2016, 10:24:48 PM
  */
 
 (function() {
@@ -116,6 +116,8 @@
 
   if (isNode) {
     module.exports = SimpleModule;
+  } else {
+    window.SimpleModule = SimpleModule;
   }
 
 }).call(this);

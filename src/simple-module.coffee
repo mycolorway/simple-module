@@ -11,9 +11,8 @@ class SimpleModule extends EventEmitter
   # Add properties to {SimpleModule} class.
   #
   # @param [Object] obj The properties of {obj} will be copied to {SimpleModule},
-  #   except property named `extended`, which is a function that will be called
-  #   after copy operation.
-  #
+  #                     except property named `extended`, which is a function
+  #                     that will be called after copy operation.
   @extend: (obj) ->
     unless obj and typeof obj == 'object'
       throw new Error('SimpleModule.extend: param should be an object')
@@ -28,9 +27,8 @@ class SimpleModule extends EventEmitter
   # Add properties to instance of {SimpleModule} class.
   #
   # @param [Hash] obj The properties of {obj} will be copied to prototype of
-  #   {SimpleModule}, except property named `included`, which is a function that
-  #   will be called after copy operation.
-  #
+  #                   {SimpleModule}, except property named `included`, which is
+  #                   a function that will be called after copy operation.
   @include: (obj) ->
     unless obj and typeof obj == 'object'
       throw new Error('SimpleModule.include: param should be an object')
@@ -90,4 +88,7 @@ class SimpleModule extends EventEmitter
     @emitAsync args...
 
 
-module.exports = SimpleModule if isNode
+if isNode
+  module.exports = SimpleModule
+else
+  window.SimpleModule = SimpleModule
