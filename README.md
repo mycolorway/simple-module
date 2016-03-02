@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mycolorway/simple-module.svg?branch=master)](https://travis-ci.org/mycolorway/simple-module)
+
 ## Introduction
 
 SimpleModule is a simple base class providing these features for subclasses:
