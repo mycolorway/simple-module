@@ -1,6 +1,8 @@
-[![Build Status](https://travis-ci.org/mycolorway/simple-module.svg?branch=master)](https://travis-ci.org/mycolorway/simple-module)
+# Simple Module
 
-## Introduction
+[![Latest Version](https://img.shields.io/npm/v/simple-module.svg)](https://www.npmjs.com/package/simple-module)
+[![Build Status](https://img.shields.io/travis/mycolorway/simple-module.svg)](https://travis-ci.org/mycolorway/simple-module)
+[![Test Coverage](https://img.shields.io/coveralls/mycolorway/simple-module.svg)](https://coveralls.io/github/mycolorway/simple-module)
 
 SimpleModule is a simple base class providing these features for subclasses:
 

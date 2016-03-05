@@ -1,0 +1,21 @@
+
+mixin navItem(item)
+  li(class=(item.slug == filename ? 'active' : ''))
+    if item.slug
+      a(href='#{item.slug}.html')= item.name
+    else
+      span= item.name
+
+    if item.children
+      ul
+        each child in item.children
+          +navItem(child)
+
+div.sidebar
+  div.title= pkg.name
+  p.version v#{pkg.version}
+  
+  nav
+    ul
+      each item in navItems
+        +navItem(item)

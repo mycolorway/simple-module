@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/simple-module/license
  * 
- * Date: 3/2/2016, 10:24:48 PM
+ * Date: 3/5/2016, 11:53:38 PM
  */
 
 (function() {

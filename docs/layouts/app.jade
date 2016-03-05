@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    
+    block title
+      title= pkg.name
+      
+    meta(name='description', content=pkg.description)
+    
+    link(rel='stylesheet', href='assets/styles/app.css')
+    block styles
+    
+  body
+    div.page
+      include ./sidebar.jade
+      
+      div.content
+        block content
+  
+    script(src='assets/scripts/app.js')
+    block scripts
