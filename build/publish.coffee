@@ -1,13 +1,11 @@
 gulp = require 'gulp'
-bump = require 'gulp-bump'
+fs = require 'fs'
 pkg = require '../package.json'
 
 gulp.task 'publish.version', ->
-  gulp.src ['bower.json']
-    .pipe bump({
-      version: pkg.version
-    })
-    .pipe gulp.dest('/')
+  bowerConfig = require '../bower.json'
+  bowerConfig.version = pkg.version
+  fs.writeFile '../bower.json', JSON.stringify(bowerConfig, null, 2)
 
 gulp.task 'publish.docs', ['compile'], (cb) ->
   cb()

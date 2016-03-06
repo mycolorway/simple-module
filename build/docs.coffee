@@ -9,8 +9,6 @@ sass = require 'gulp-sass'
 pkg = require '../package.json'
 navItems = require '../docs/data/nav.json'
 
-gulp.task 'docs', ['docs.clean', 'docs.jade', 'docs.coffee', 'docs.sass']
-
 gulp.task 'docs.clean', (cb) ->
   removeDir '_docs'
   cb()
@@ -41,6 +39,8 @@ gulp.task 'docs.sass', ['docs.clean'], ->
   gulp.src 'docs/**/*.scss'
     .pipe sass().on('error', sass.logError)
     .pipe gulp.dest('_docs/')
+
+gulp.task 'docs', ['docs.clean', 'docs.jade', 'docs.coffee', 'docs.sass']
 
 
 removeDir = (dirPath) ->
