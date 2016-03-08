@@ -1,7 +1,7 @@
 gulp = require 'gulp'
 jasmine = require 'gulp-jasmine-phantom'
 
-gulp.task 'test', ['compile.coffee'], ->
+gulp.task 'test', ->
   gulp.src 'test/**/*.coffee'
     .pipe jasmine()
 

@@ -3,5 +3,6 @@ bower_components
 npm-debug.log
 _docs
 .docs_publish_cache
+.token.json
 
 .DS_Store

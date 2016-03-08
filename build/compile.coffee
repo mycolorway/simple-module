@@ -4,24 +4,23 @@ coffee = require 'gulp-coffee'
 sass = require 'gulp-sass'
 uglify = require 'gulp-uglify'
 through = require 'through2'
+runSequence = require 'run-sequence'
 path = require 'path'
 pkg = require '../package.json'
 
-gulp.task 'compile.coffee', (cb) ->
+gulp.task 'compile.coffee', ->
   gulp.src 'src/**/*.coffee'
     .pipe coffee().on('error', gutil.log)
     .pipe through.obj headerTransform()
     .pipe gulp.dest('dist/')
-  cb()
 
-gulp.task 'compile.sass', (cb) ->
+gulp.task 'compile.sass', ->
   gulp.src 'src/**/*.scss'
     .pipe sass().on('error', sass.logError)
     .pipe through.obj headerTransform()
     .pipe gulp.dest('dist/')
-  cb()
 
-gulp.task 'compile.uglify', ['compile.coffee'], ->
+gulp.task 'compile.uglify', ->
   gulp.src ['dist/**/*.js', '!dist/**/*.min.js']
     .pipe uglify()
     .pipe through.obj headerTransform('simple')
@@ -34,26 +33,26 @@ gulp.task 'compile.uglify', ['compile.coffee'], ->
       done()
     .pipe gulp.dest('dist/')
 
-gulp.task 'compile', ['compile.coffee', 'compile.uglify'], (cb) ->
-  cb()
+gulp.task 'compile', ->
+  runSequence 'compile.coffee', 'compile.uglify'
 
-
-fileHeader =
-  full: """
-    /**
-     * #{pkg.name} v#{pkg.version}
-     * #{pkg.homepage}
-     *
-     * Copyright Mycolorway Design
-     * Released under the MIT license
-     * #{pkg.homepage}/license.html
-     *
-     * Date: #{(new Date()).toLocaleString('en-US')}
-     */\n\n
-  """
-  simple: "/* #{pkg.name} v#{pkg.version} | (c) Mycolorway Design | MIT License */\n"
 
 headerTransform = (type = 'full') ->
+  fileHeader =
+    full: """
+      /**
+       * #{pkg.name} v#{pkg.version}
+       * #{pkg.homepage}
+       *
+       * Copyright Mycolorway Design
+       * Released under the MIT license
+       * #{pkg.homepage}/license.html
+       *
+       * Date: #{(new Date()).toLocaleString('en-US')}
+       */\n\n
+    """
+    simple: "/* #{pkg.name} v#{pkg.version} | (c) Mycolorway Design | MIT License */\n"
+
   (file, encoding, done) ->
     headerBuffer = new Buffer fileHeader[type]
     file.contents = Buffer.concat [headerBuffer, file.contents]
