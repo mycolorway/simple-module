@@ -1,12 +1,12 @@
 /**
  * simple-module v3.0.0
  * http://mycolorway.github.io/simple-module
- * 
+ *
  * Copyright Mycolorway Design
  * Released under the MIT license
- * http://mycolorway.github.io/simple-module/license
- * 
- * Date: 3/5/2016, 11:53:38 PM
+ * http://mycolorway.github.io/simple-module/license.html
+ *
+ * Date: 3/8/2016, 10:33:15 AM
  */
 
 (function() {

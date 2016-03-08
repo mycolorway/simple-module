@@ -2,14 +2,8 @@
   "slug": "index",
   "name": "Home"
 }, {
-  "name": "Examples",
-  "children": [{
-    "slug": "test-example-1",
-    "name": "How to write plugin?"
-  }, {
-    "slug": "test-example-2",
-    "name": "How to contribute?"
-  }]
+  "slug": "api",
+  "name": "API Reference"
 }, {
   "slug": "license",
   "name": "License"

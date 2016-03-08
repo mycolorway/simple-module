@@ -8,13 +8,28 @@ coffee = require 'gulp-coffee'
 sass = require 'gulp-sass'
 pkg = require '../package.json'
 navItems = require '../docs/data/nav.json'
+helper = require './helper.coffee'
 
-gulp.task 'docs.clean', (cb) ->
-  removeDir '_docs'
-  cb()
+gulp.task 'docs.clean', ->
+  helper.removeDir '_docs'
 
-gulp.task 'docs.jade', ['docs.clean'], ->
+gulp.task 'docs.jade', ->
+  compileJade()
 
+
+gulp.task 'docs.coffee', ->
+  compileCoffee()
+
+gulp.task 'docs.sass', ->
+  compileSass()
+
+gulp.task 'docs', ['docs.clean'], ->
+  compileJade()
+  compileCoffee()
+  compileSass()
+
+
+compileJade = ->
   gulp.src(['docs/**/*.jade', '!docs/layouts/**/*.jade'])
     .pipe through.obj (file, encoding, done) ->
       file.data =
@@ -30,27 +45,12 @@ gulp.task 'docs.jade', ['docs.clean'], ->
       done()
     .pipe gulp.dest '_docs'
 
-gulp.task 'docs.coffee', ['docs.clean'], ->
+compileCoffee = ->
   gulp.src 'docs/**/*.coffee'
     .pipe coffee().on('error', gutil.log)
     .pipe gulp.dest('_docs/')
 
-gulp.task 'docs.sass', ['docs.clean'], ->
+compileSass = ->
   gulp.src 'docs/**/*.scss'
     .pipe sass().on('error', sass.logError)
     .pipe gulp.dest('_docs/')
-
-gulp.task 'docs', ['docs.clean', 'docs.jade', 'docs.coffee', 'docs.sass']
-
-
-removeDir = (dirPath) ->
-  return unless fs.existsSync dirPath
-
-  fs.readdirSync(dirPath).forEach (file, index) ->
-    filePath = "#{dirPath}/#{file}"
-    if fs.lstatSync(filePath).isDirectory()
-      removeDir filePath
-    else
-      fs.unlinkSync filePath
-
-  fs.rmdirSync dirPath
