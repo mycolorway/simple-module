@@ -4,11 +4,41 @@ block title
   title API Reference - #{pkg.name}
   
 block content
-  :markdown-it
-    ## Options
-    
-    ## Instance Methods
-    
-    ## Class Methods
-    
-    ## Events
+  h2 Options
+  
+  p Pass options to constructor to create new instance
+  
+  pre
+    code.js.
+      let module = new SimpleModule({
+        plugins: ['pluginName']
+      });
+      
+  p.api-item
+    a.name(id='option-plugins', href='#option-plugins')
+      b plugins
+    code Array
+    span.default default: [ ]
+  
+  p Specify the plugins to be used on the new instance. The plugins passing to the constructor need to be registered by class method #[a(href='#class-method-plugins') plugin(name, cls)].
+  
+  h2 Instance Methods
+  
+  p Methods exposed on SimpleModule instance:
+  
+  pre
+    code.js.
+      let module = new SimpleModule()
+      module.instanceMethod()
+      
+  p.api-item
+    a.name(id='instance-method-on', href='#instance-method-on')
+      b on
+    span.params (#[span.param eventName]#[code String],#[span.param listener]#[code Function])
+    span.return return: self
+  
+  p Add a event listener for the specified event. The first param #[code eventName] supports namespaces and wildcards, please check #[a(href="https://github.com/asyncly/EventEmitter2#api") EventEmitter2 API] for more information.
+  
+  
+  h2 Class Methods
+  

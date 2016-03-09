@@ -59,9 +59,8 @@ class SimpleModule extends EventEmitter
 
     @plugins[name] = cls
 
-  opts: {
+  @opts:
     plugins: []
-  }
 
   plugins: {}
 
@@ -71,12 +70,11 @@ class SimpleModule extends EventEmitter
   #
   # @return The new instance.
   constructor: (opts) ->
-    _.extend @opts, opts
+    super()
+    @opts = _.extend {}, SimpleModule.opts, opts
 
     @opts.plugins.forEach (name) =>
-      @plugins[name] = new @constructor.plugins[name](@)
-
-    @
+      @plugins[name] = new SimpleModule.plugins[name](@)
 
   one: (args...) ->
     @once args...

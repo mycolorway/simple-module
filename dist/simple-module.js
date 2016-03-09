@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/simple-module/license.html
  *
- * Date: 3/9/2016, 8:45:12 PM
+ * Date: 3/10/2016, 1:22:26 AM
  */
 
 (function() {
@@ -76,20 +76,20 @@
       return this.plugins[name] = cls;
     };
 
-    SimpleModule.prototype.opts = {
+    SimpleModule.opts = {
       plugins: []
     };
 
     SimpleModule.prototype.plugins = {};
 
     function SimpleModule(opts) {
-      _.extend(this.opts, opts);
+      SimpleModule.__super__.constructor.call(this);
+      this.opts = _.extend({}, SimpleModule.opts, opts);
       this.opts.plugins.forEach((function(_this) {
         return function(name) {
-          return _this.plugins[name] = new _this.constructor.plugins[name](_this);
+          return _this.plugins[name] = new SimpleModule.plugins[name](_this);
         };
       })(this));
-      this;
     }
 
     SimpleModule.prototype.one = function() {
