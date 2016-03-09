@@ -12,6 +12,7 @@ gulp.task 'default', ->
     gulp.watch 'test/**/*.coffee', ['test']
 
     # watch docs files
+    gulp.watch ['docs/**/*.jade', 'docs/data/**/*.json'], ['docs.jade']
     gulp.watch 'docs/**/*.jade', ['docs.jade']
     gulp.watch 'docs/**/*.coffee', ['docs.coffee']
     gulp.watch 'docs/**/*.scss', ['docs.sass']

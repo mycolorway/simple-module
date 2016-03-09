@@ -2,7 +2,7 @@ node_modules
 bower_components
 npm-debug.log
 _docs
-.docs_publish_cache
+.publish
 .token.json
 
 .DS_Store

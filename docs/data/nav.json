@@ -5,6 +5,9 @@
   "slug": "api",
   "name": "API Reference"
 }, {
+  "name": "Source Code",
+  "url": "https://github.com/mycolorway/simple-module"
+}, {
   "slug": "license",
   "name": "License"
 }]

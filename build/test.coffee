@@ -8,7 +8,6 @@ gulp.task 'test', ->
   # Test code in browser:
   # gulp.src 'test/**/*.coffee'
   #   .pipe coffee()
-  #   .pipe jasmine()
   #   .pipe gulp.dest('test/')
   #   .pipe jasmine
   #     integration: true

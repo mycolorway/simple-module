@@ -1,6 +1,8 @@
 fs = require 'fs'
-request = require 'request'
-prompt = require 'prompt'
+path = require 'path'
+through = require 'through2'
+_ = require 'lodash'
+pkg = require '../package.json'
 
 removeDir = (dirPath) ->
   return unless fs.existsSync dirPath
@@ -14,69 +16,65 @@ removeDir = (dirPath) ->
 
   fs.rmdirSync dirPath
 
+headerTemplate =
+  full: """
+    /**
+     * <%= name %> v<%= version %>
+     * <%= homepage %>
+     *
+     * Copyright Mycolorway Design
+     * Released under the MIT license
+     * <%= homepage %>/license.html
+     *
+     * Date: <%= date %>
+     */\n\n
+  """
+  simple: "/* <%= name %> v<%= version %> | (c) Mycolorway Design | MIT License */\n"
 
-getReleaseVersion = ->
-  changelogs = fs.readFileSync('CHANGELOG.md').toString()
-  result = changelogs.match /## V(\d+\.\d+\.\d+)/
+fileHeader = (type = 'full') ->
+  header = _.template(headerTemplate[type])
+    name: pkg.name
+    version: pkg.version
+    homepage: pkg.homepage
+    date: new Date().toLocaleString()
 
-  if result and result.length > 1
-    result[1]
-  else
-    null
+  through.obj (file, encoding, done) ->
+    headerBuffer = new Buffer header
+    file.contents = Buffer.concat [headerBuffer, file.contents]
+    @push file
+    done()
 
-getReleaseContent = (version) ->
-  changelogs = fs.readFileSync('CHANGELOG.md').toString()
-  re = new RegExp "## V#{version.replace('.', '\\.')}.+\\n\\n((?:\\* .*\\n)+)"
-  result = changelogs.match re
+rename = (opts) ->
+  opts = _.extend
+    prefix: ''
+    suffix: ''
+    dirname: null
+    basename: null
+    extname: null
+  , opts
 
-  if result and result.length > 1
-    result[1]
-  else
-    null
+  through.obj (file, encoding, done) ->
+    dirname = path.dirname file.relative
+    extname = path.extname file.relative
+    basename = path.basename file.relative, extname
+    newDirName = if _.isNull(opts.dirname) then dirname else opts.dirname
+    newExtName = if _.isNull(opts.extname) then extname else opts.extname
+    newBaseName = if _.isNull(opts.basename) then basename else opts.basename
 
-createRelease = (token, twoFactorCode) ->
-  pkg = require '../package.json'
-  content = getReleaseContent pkg.version
-  unless content
-    throw new Error('Publish: Invalid release content in CHANGELOG.md')
-    return
+    filename = "#{opts.prefix}#{newBaseName}#{opts.suffix}#{newExtName}"
+    file.path = path.join file.base, newDirName, filename
+    @push file
+    done()
 
-  request
-    uri: "https://api.github.com/repos/#{pkg.githubOwner}/#{pkg.name}/releases"
-    method: 'POST'
-    json: true
-    body:
-      tag_name: "v#{pkg.version}",
-      name: "v#{pkg.version}",
-      body: content,
-      draft: false,
-      prerelease: false
-    headers:
-      Authorization: "token #{token}",
-      'User-Agent': 'Mycolorway Release',
-      'X-GitHub-OTP': twoFactorCode || undefined
-  , (err, response, body) ->
-    if err
-      throw new Error 'Publish: Error occured while creating github release.'
-    else if response.statusCode == 401
-      otpHeader = response.headers['X-GitHub-OTP']
-      if otpHeader and otpHeader.indexOf('required') > -1
-        prompt.start()
-        prompt.get [{
-          name: 'two-factor authentication code',
-          required: true,
-          hidden: true
-        }], (error, result) ->
-          createRelease token, result['two-factor authentication code']
-      else
-        throw new Error "Publish: #{response.statusCode} #{JSON.stringify response.body}"
-    else if response.statusCode.toString().search(/2\d\d/) > -1
-      console.log "#{pkg.name} v#{pkg.version} released on github"
-    else
-      throw new Error "Publish: #{response.statusCode} #{JSON.stringify response.body}"
+addData = (data) ->
+  through.obj (file, encoding, done) ->
+    file.data = if _.isFunction(data) then data(file) else data
+    @push file
+    done()
+
 
 module.exports =
   removeDir: removeDir
-  getReleaseVersion: getReleaseVersion
-  getReleaseContent: getReleaseContent
-  createRelease: createRelease
+  fileHeader: fileHeader
+  rename: rename
+  addData: addData

@@ -32,7 +32,6 @@
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
     "jstransformer-markdown-it": "^0.2.2",
-    "prompt": "^1.0.0",
     "request": "^2.69.0",
     "run-sequence": "^1.1.5",
     "through2": "^2.0.1"
