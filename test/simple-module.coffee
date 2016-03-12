@@ -14,6 +14,11 @@ describe 'SimpleModule', ->
     module.trigger 'customEvent'
     expect(obj.listener).toHaveBeenCalled()
 
+    obj.listener.calls.reset()
+    module.off 'customEvent'
+    module.trigger 'customEvent'
+    expect(obj.listener).not.toHaveBeenCalled()
+
   it 'should support mixins', ->
     SimpleModule.extend
       classProperty: true

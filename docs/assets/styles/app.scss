@@ -98,6 +98,29 @@ body {
 
     .api-item {
       line-height: 22px;
+      position: relative;
+
+      &:hover {
+        .anchor {
+          display: block;
+        }
+      }
+
+      .anchor {
+        display: none;
+        width: 30px;
+        line-height: 22px;
+        position: absolute;
+        top: 0;
+        left: -30px;
+        margin: 0;
+        padding: 0;
+
+        svg {
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
 
       .name {
         font-size: 20px;
@@ -114,10 +137,16 @@ body {
       }
 
       .params {
-        color: #666666;
+        color: #999999;
         margin: 0 5px;
+
         .param {
+          color: #000000;
           margin: 0 0 0 5px;
+        }
+
+        code {
+          color: #666666;
         }
       }
 
@@ -125,6 +154,14 @@ body {
         color: #999999;
         margin: 0 5px;
         font-size: 14px;
+      }
+    }
+  }
+
+  &#index {
+    .content {
+      h1 {
+        display: none;
       }
     }
   }

@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/simple-module/license.html
  *
- * Date: 3/10/2016, 1:22:26 AM
+ * Date: 3/12/2016, 9:57:53 PM
  */
 
 (function() {
@@ -73,7 +73,8 @@
         throw new Error('SimpleModule.plugin: second param should be a class reference');
         return;
       }
-      return this.plugins[name] = cls;
+      this.plugins[name] = cls;
+      return this;
     };
 
     SimpleModule.opts = {
@@ -91,6 +92,14 @@
         };
       })(this));
     }
+
+    SimpleModule.prototype.off = function(name, listener) {
+      if (_.isFunction(listener)) {
+        return SimpleModule.__super__.off.call(this, name, listener);
+      } else {
+        return this.removeAllListeners(name);
+      }
+    };
 
     SimpleModule.prototype.one = function() {
       var args;

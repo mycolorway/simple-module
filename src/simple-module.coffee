@@ -58,6 +58,7 @@ class SimpleModule extends EventEmitter
       return
 
     @plugins[name] = cls
+    @
 
   @opts:
     plugins: []
@@ -75,6 +76,12 @@ class SimpleModule extends EventEmitter
 
     @opts.plugins.forEach (name) =>
       @plugins[name] = new SimpleModule.plugins[name](@)
+
+  off: (name, listener) ->
+    if _.isFunction listener
+      super name, listener
+    else
+      @removeAllListeners name
 
   one: (args...) ->
     @once args...

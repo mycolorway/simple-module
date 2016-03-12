@@ -6,9 +6,11 @@
 [![David](https://img.shields.io/david/dev/mycolorway/simple-module.svg)](https://david-dm.org/mycolorway/simple-module#info=devDependencies)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/mycolorway/simple-module)
 
-SimpleModule is a simple base class providing these features for subclasses:
+SimpleModule is a simple base class providing some necessary features to make its subclasses extendable.
 
-### Event Emitter
+## Features
+
+#### Event Emitter
 
 SimpleModule inherits from [EventEmitter2](https://github.com/asyncly/EventEmitter2) which is an advanced version of Node.js default [EventEmitter](https://nodejs.org/api/events.html). EventEmitter2 provides event namespaces and wildcards:
 
@@ -30,7 +32,7 @@ module.trigger('customEvent', 'data string');
 module.emit('customEvent', 'data string');
 ```
 
-### Mixins
+#### Mixins
 
 Add class properties and methods to SimpleModule:
 
@@ -54,13 +56,14 @@ var testMixins = {
 SimpleModule.include(testMixins);
 ```
 
-### Plugins
+#### Plugins
 
 Register a plugin on SimpleModule:
 
 ```js
 class TestPlugin extends SimpleModule {
   constructor(module) {
+    super()
     this.module = module;
     this.test = true;
   }

@@ -1,5 +1,6 @@
 fs = require 'fs'
 path = require 'path'
+gutil = require 'gulp-util'
 through = require 'through2'
 _ = require 'lodash'
 pkg = require '../package.json'
@@ -72,9 +73,24 @@ addData = (data) ->
     @push file
     done()
 
+jadeStream = (opts) ->
+  through.obj (file, encoding, done) ->
+    opts = _.extend {filename: file.path}, opts
+    file.path = gutil.replaceExtension file.path, '.html'
+    try
+      jade = require 'jade'
+      compile = jade.compile file.contents.toString(), opts
+      result = compile _.extend {}, opts.locals, file.data
+      file.contents = new Buffer result
+    catch e
+      gutil.log "jade compile error: #{e.message}"
+    @push file
+    done()
+
 
 module.exports =
   removeDir: removeDir
   fileHeader: fileHeader
   rename: rename
   addData: addData
+  jade: jadeStream

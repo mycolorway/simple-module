@@ -1,11 +1,11 @@
 gulp = require 'gulp'
 gutil = require 'gulp-util'
-jade = require 'gulp-jade'
 runSequence = require 'run-sequence'
 path = require 'path'
 coffee = require 'gulp-coffee'
 sass = require 'gulp-sass'
 helper = require './helper.coffee'
+
 
 gulp.task 'docs.clean', ->
   helper.removeDir '_docs'
@@ -16,7 +16,7 @@ gulp.task 'docs.jade', ->
       pkg: require '../package.json'
       navItems: require '../docs/data/nav.json'
       filename: path.basename(file.path, '.jade')
-    .pipe jade()
+    .pipe helper.jade()
     .pipe helper.rename
       dirname: ''
       extname: '.html'
