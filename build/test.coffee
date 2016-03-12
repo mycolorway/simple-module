@@ -1,20 +1,14 @@
 gulp = require 'gulp'
-# coffee = require 'gulp-coffee'
-jasmine = require 'gulp-jasmine-phantom'
+path = require 'path'
+Jasmine = require 'jasmine'
+helper = require './helper.coffee'
 
 gulp.task 'test', ->
-  gulp.src 'test/**/*.coffee'
-    .pipe jasmine(includeStackTrace: true)
+  specFile = 'test/simple-module.coffee'
+  fileId = require.resolve path.resolve(specFile)
+  helper.deleteRequireCache fileId
 
-  # Test code in browser:
-  # gulp.src 'test/**/*.coffee'
-  #   .pipe coffee()
-  #   .pipe gulp.dest('test/')
-  #   .pipe jasmine
-  #     keepRunner: 'test/'
-  #     integration: true
-  #     vendor: [
-  #       'node_modules/eventemitter2/lib/eventemitter2.js'
-  #       'node_modules/lodash/lodash.js'
-  #       'dist/simple-module.js'
-  #     ]
+  jasmine = new Jasmine()
+  jasmine.onComplete (passed) ->
+    # process.exit(1) unless passed
+  jasmine.execute [specFile]

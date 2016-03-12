@@ -88,9 +88,20 @@ jadeStream = (opts) ->
     done()
 
 
+deleteRequireCache = (id) ->
+  return unless id and id.indexOf('node_modules') == -1
+
+  files = require.cache[id]
+  return unless files
+
+  Object.keys(files.children).forEach (child) ->
+    deleteRequireCache files.children[child].id
+  delete require.cache[id]
+
 module.exports =
   removeDir: removeDir
   fileHeader: fileHeader
   rename: rename
   addData: addData
   jade: jadeStream
+  deleteRequireCache: deleteRequireCache
