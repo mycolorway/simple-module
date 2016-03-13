@@ -22,12 +22,6 @@ body {
       color: #6da1e3;
     }
   }
-
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
 }
 
 .page {
@@ -39,7 +33,7 @@ body {
   .sidebar {
     width: $sidebar-width;
     box-sizing: border-box;
-    padding: 30px 30px;
+    padding: 30px 30px 30px 40px;
     background: #f3f3f3;
     font-size: 16px;
     flex: 0 0 auto;
@@ -66,6 +60,10 @@ body {
       margin: 40px 0 0 2px;
 
       ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
         li {
           font-size: 20px;
           margin: 0 0 10px 0;

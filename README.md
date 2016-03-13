@@ -94,3 +94,51 @@ Install via bower:
 ```bash
 bower install --save simple-module
 ```
+
+## Development
+
+Clone repository from github:
+
+```bash
+git clone https://github.com/mycolorway/simple-module.git
+```
+
+Install npm dependencies:
+
+```bash
+npm install
+```
+
+Run default gulp task to build project, which will compile source files, run test and watch file changes for you:
+
+```bash
+gulp
+```
+
+Now, you are ready to go.
+
+## Publish
+
+Please make sure all test have passed before you publish new version, and you need do these preparations:
+
+1. Add new release information in `CHANGELOG.md`. The format of markdown contents will matter, because build scripts will get version and release content from this file by regular expression. You can follow the format of the older release information.
+
+2. Put your [personal API tokens](https://github.com/blog/1509-personal-api-tokens) in `/.token.json`, which is required by build scripts to request [Github API](https://developer.github.com/v3/):
+
+```json
+{
+  "github": "[your github personal access token]"
+}
+```
+
+Now you can run `gulp publish` task, which will do these work for you:
+
+* Generate the static doc site and push it to `gh-pages` branch.
+* Get new version number from `CHANGELOG.md`, and bump it into `package.json` and `bower.json`.
+* Get release information from `CHANGELOG.md` and request Github API to create new release.
+
+If everything goes fine, you can publish new version to npm at the end:
+
+```bash
+npm publish
+```
