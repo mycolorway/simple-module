@@ -17,6 +17,16 @@ removeDir = (dirPath) ->
 
   fs.rmdirSync dirPath
 
+deleteRequireCache = (id) ->
+  return unless id and id.indexOf('node_modules') == -1
+
+  files = require.cache[id]
+  return unless files
+
+  Object.keys(files.children).forEach (child) ->
+    deleteRequireCache files.children[child].id
+  delete require.cache[id]
+
 headerTemplate =
   full: """
     /**
@@ -32,7 +42,7 @@ headerTemplate =
   """
   simple: "/* <%= name %> v<%= version %> | (c) Mycolorway Design | MIT License */\n"
 
-fileHeader = (type = 'full') ->
+gulpFileHeader = (type = 'full') ->
   header = _.template(headerTemplate[type])
     name: pkg.name
     version: pkg.version
@@ -45,7 +55,7 @@ fileHeader = (type = 'full') ->
     @push file
     done()
 
-rename = (opts) ->
+gulpRename = (opts) ->
   opts = _.extend
     prefix: ''
     suffix: ''
@@ -67,13 +77,13 @@ rename = (opts) ->
     @push file
     done()
 
-addData = (data) ->
+gulpData = (data) ->
   through.obj (file, encoding, done) ->
     file.data = if _.isFunction(data) then data(file) else data
     @push file
     done()
 
-jadeStream = (opts) ->
+gulpJade = (opts) ->
   through.obj (file, encoding, done) ->
     opts = _.extend {filename: file.path}, opts
     file.path = gutil.replaceExtension file.path, '.html'
@@ -83,25 +93,65 @@ jadeStream = (opts) ->
       result = compile _.extend {}, opts.locals, file.data
       file.contents = new Buffer result
     catch e
-      gutil.log "jade compile error: #{e.message}"
+      gutil.log gutil.colors.red "jade compile error: #{e.message}"
+    @push file
+    done()
+
+gulpCoffee = (opts) ->
+  through.obj (file, encoding, done) ->
+    str = file.contents.toString()
+
+    try
+      coffee = require 'coffee-script'
+      result = coffee.compile str, opts
+    catch e
+      gutil.log gutil.colors.red "coffee compile error: #{e.message}"
+
+    file.contents = new Buffer result
+    file.path = gutil.replaceExtension file.path, '.js'
+    @push file
+    done()
+
+gulpSass = (opts) ->
+  through.obj (file, encoding, done) ->
+    opts = _.extend
+      data: file.contents.toString()
+      includePath: [path.dirname(file.path)]
+    , opts
+
+    try
+      sass = require 'node-sass'
+      result = sass.renderSync opts
+    catch e
+      gutil.log gutil.colors.red "sass compile error: #{e.message}"
+
+    file.contents = new Buffer result.css
+    file.path = gutil.replaceExtension file.path, '.css'
+    @push file
+    done()
+
+gulpUglify = (opts) ->
+  through.obj (file, encoding, done) ->
+    opts = _.extend {fromString: true}, opts
+    
+    try
+      uglify = require 'uglify-js'
+      result = uglify.minify file.contents.toString(), opts
+    catch e
+      gutil.log gutil.colors.red "uglify compile error: #{e.message}"
+
+    file.contents = new Buffer result.code
     @push file
     done()
 
 
-deleteRequireCache = (id) ->
-  return unless id and id.indexOf('node_modules') == -1
-
-  files = require.cache[id]
-  return unless files
-
-  Object.keys(files.children).forEach (child) ->
-    deleteRequireCache files.children[child].id
-  delete require.cache[id]
-
 module.exports =
   removeDir: removeDir
-  fileHeader: fileHeader
-  rename: rename
-  addData: addData
-  jade: jadeStream
   deleteRequireCache: deleteRequireCache
+  fileHeader: gulpFileHeader
+  rename: gulpRename
+  data: gulpData
+  jade: gulpJade
+  coffee: gulpCoffee
+  sass: gulpSass
+  uglify: gulpUglify

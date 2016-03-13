@@ -1,9 +1,6 @@
 gulp = require 'gulp'
-gutil = require 'gulp-util'
 runSequence = require 'run-sequence'
 path = require 'path'
-coffee = require 'gulp-coffee'
-sass = require 'gulp-sass'
 helper = require './helper.coffee'
 
 
@@ -12,7 +9,7 @@ gulp.task 'docs.clean', ->
 
 gulp.task 'docs.jade', ->
   gulp.src(['docs/**/*.jade', '!docs/layouts/**/*.jade'])
-    .pipe helper.addData (file) ->
+    .pipe helper.data (file) ->
       pkg: require '../package.json'
       navItems: require '../docs/data/nav.json'
       filename: path.basename(file.path, '.jade')
@@ -24,12 +21,12 @@ gulp.task 'docs.jade', ->
 
 gulp.task 'docs.coffee', ->
   gulp.src 'docs/**/*.coffee'
-    .pipe coffee().on('error', gutil.log)
+    .pipe helper.coffee()
     .pipe gulp.dest('_docs/')
 
 gulp.task 'docs.sass', ->
   gulp.src 'docs/**/*.scss'
-    .pipe sass().on('error', sass.logError)
+    .pipe helper.sass()
     .pipe gulp.dest('_docs/')
 
 gulp.task 'docs', ->
