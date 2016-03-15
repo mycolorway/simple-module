@@ -1,57 +1,152 @@
-Simple Module
-=========
+# Simple Module
 
-Simple Module是一个CoffeeScript抽象类，彩程的前端UI库都基于这个抽象类来构建。
+[![Latest Version](https://img.shields.io/npm/v/simple-module.svg)](https://www.npmjs.com/package/simple-module)
+[![Build Status](https://img.shields.io/travis/mycolorway/simple-module.svg)](https://travis-ci.org/mycolorway/simple-module)
+[![David](https://img.shields.io/david/mycolorway/simple-module.svg)](https://david-dm.org/mycolorway/simple-module)
+[![David](https://img.shields.io/david/dev/mycolorway/simple-module.svg)](https://david-dm.org/mycolorway/simple-module#info=devDependencies)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/mycolorway/simple-module)
 
-依赖jQuery 2.0+，支持：IE10+、Firefox、Chrome、Safari。
+SimpleModule is a simple base class providing some necessary features to make its subclasses extendable.
 
-SimpleModule类可以为组件提供这些功能：
+## Features
 
-####动态扩展
+#### Event Emitter
 
-`SimpleModule.extend` 可以给组件动态的添加类属性和类方法。
+SimpleModule inherits from [EventEmitter2](https://github.com/asyncly/EventEmitter2) which is an advanced version of Node.js default [EventEmitter](https://nodejs.org/api/events.html). EventEmitter2 provides event namespaces and wildcards:
 
-`SimpleModule.include` 可以给组件动态的添加原型属性和原型方法。
+```js
+let module = new SimpleModule();
 
-`SimpleModule.connect` 可以给组件挂载插件和扩展。
+// bind namespace event
+module.on('customEvent.test', function(data) {
+  console.log(data);
+});
 
-#### 自定义事件
+// module.one is alias of module.once
+module.one('customEvent.*', function(data) {
+  console.log(data);
+});
 
-基于jQuery的自定义事件的实现了这些事件接口：
-
-`module.on 'type', callback` 绑定事件
-
-`module.one 'type', callback` 绑定事件，并在第一次触发之后自动解除绑定
-
-`module.off 'type'` 解绑事件
-
-`module.trigger 'type', [args]` 触发自定义事件
-
-`module.triggerHandler 'type', [args]` 触发自定义事件，并且返回最后一个callback的返回值
-
-#### 简单的本地化支持
-
-`Module.i18n` 对象用来存放本地化资源（键值对），例如：
-
-```coffee
-Module.i18n =
-  'zh-Cn':
-    hello: '你好，%s'
-  'en':
-    hello: 'Hi, %s'
+// module.trigger is alias of module.emit
+module.trigger('customEvent', 'data string');
+module.emit('customEvent', 'data string');
 ```
 
-`Module.locale` 用来设置当前的本地化语言，例如：
+#### Mixins
 
-```coffee
-Module.locale = 'zh-CN'
+Add class properties and methods to SimpleModule:
+
+```js
+var testMixins = {
+  classProperty: true,
+  classMethod: function() {}
+};
+
+SimpleModule.extend(testMixins);
 ```
 
-`module._t(key, args..)` 可以用来获取translation字符串，例如：
+Add instance properties and methods to SimpleModule:
 
-```coffee
-@_t('hello', 'farthinker') # Hi, farthinker
+```js
+var testMixins = {
+  instanceProperty: true,
+  instanceMethod: function() {}
+};
+
+SimpleModule.include(testMixins);
 ```
 
-SimpleModule只提供了最简单的本地化支持，一些本地化内容比较复杂的组件还是推荐使用像[i18next](http://i18next.com/)这样功能完整的本地化库。
+#### Plugins
 
+Register a plugin on SimpleModule:
+
+```js
+class TestPlugin extends SimpleModule {
+  constructor(module) {
+    super()
+    this.module = module;
+    this.test = true;
+  }
+}
+
+SimpleModule.plugin('testPlugin', TestPlugin);
+```
+
+Then pass the plugin name to options while creating instance:
+
+```js
+let module = new SimpleModule({
+  plugins: ['testPlugin']
+});
+console.log(module.plugins.testPlugin.test); // true
+```
+
+## Installation
+
+Install via npm:
+
+```bash
+npm install --save simple-module
+```
+
+Install via bower:
+
+```bash
+bower install --save simple-module
+```
+
+## Submitting Issues
+
+If have issues while using this module, please consider discussing it on [Gitter channel](https://gitter.im/mycolorway/simple-module) first.
+
+If you confirm the issue is indeed a bug, you can browse the [issues page](https://github.com/mycolorway/simple-module/issues) for existing issues describing the same problem.
+
+If you found nothing on issues page, please create an new issue with detailed debug information, for example, reproduce procedure, error stacks, screenshots etc. Issues without enough debug information will probably be closed.
+
+## Development
+
+Clone repository from github:
+
+```bash
+git clone https://github.com/mycolorway/simple-module.git
+```
+
+Install npm dependencies:
+
+```bash
+npm install
+```
+
+Run default gulp task to build project, which will compile source files, run test and watch file changes for you:
+
+```bash
+gulp
+```
+
+Now, you are ready to go.
+
+## Publish
+
+If you want to publish new version to npm and bower, please make sure all tests have passed before you publish new version, and you need do these preparations:
+
+* Add new release information in `CHANGELOG.md`. The format of markdown contents will matter, because build scripts will get version and release content from this file by regular expression. You can follow the format of the older release information.
+
+* Put your [personal API tokens](https://github.com/blog/1509-personal-api-tokens) in `/.token.json`, which is required by build scripts to request [Github API](https://developer.github.com/v3/):
+
+```json
+{
+  "github": "[your github personal access token]"
+}
+```
+
+Now you can run `gulp publish` task, which will do these work for you:
+
+* Generate the static doc site and push it to `gh-pages` branch.
+* Get new version number from `CHANGELOG.md`, and bump it into `package.json` and `bower.json`.
+* Get release information from `CHANGELOG.md` and request Github API to create new release.
+
+If everything goes fine, you can publish new version to npm at the end:
+
+```bash
+npm publish
+```

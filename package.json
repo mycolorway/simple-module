@@ -1,26 +1,39 @@
 {
   "name": "simple-module",
-  "version": "2.0.6",
-  "description": "A abstract class for module and UI widget.",
+  "githubOwner": "mycolorway",
+  "version": "3.0.0",
+  "description": "A base class for javascript modules.",
+  "homepage": "http://mycolorway.github.io/simple-module",
   "repository": {
     "type": "git",
-    "url": "git@github.com:mycolorway/simple-module.git"
+    "url": "https://github.com/mycolorway/simple-module.git"
   },
   "author": "farthinker",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mycolorway/simple-module/issues"
   },
-  "homepage": "https://github.com/mycolorway/simple-module",
-  "main": "lib/module.js",
+  "main": "dist/simple-module.js",
+  "scripts": {
+    "start": "gulp",
+    "test": "gulp test"
+  },
   "dependencies": {
-    "jquery": "2.x"
+    "eventemitter2": "^1.0.0",
+    "lodash": "^4.5.1"
   },
   "devDependencies": {
-    "grunt": "0.x",
-    "grunt-contrib-watch": "0.x",
-    "grunt-contrib-coffee": "0.x",
-    "grunt-contrib-jasmine": "0.x",
-    "grunt-umd": "2.x"
+    "coffee-script": "^1.10.0",
+    "gulp": "^3.9.1",
+    "gulp-gh-pages": "^0.5.4",
+    "gulp-util": "^3.0.7",
+    "jade": "^1.11.0",
+    "jasmine": "^2.4.1",
+    "jstransformer-markdown-it": "^0.2.2",
+    "node-sass": "^3.4.2",
+    "request": "^2.69.0",
+    "run-sequence": "^1.1.5",
+    "through2": "^2.0.1",
+    "uglify-js": "^2.6.2"
   }
 }
