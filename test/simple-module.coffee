@@ -1,4 +1,4 @@
-SimpleModule = require '../dist/simple-module.js'
+SimpleModule = require '../src/simple-module.coffee'
 _ = require 'lodash'
 
 describe 'SimpleModule', ->

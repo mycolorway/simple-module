@@ -95,6 +95,14 @@ Install via bower:
 bower install --save simple-module
 ```
 
+## Submitting Issues
+
+If have issues while using this module, please consider discussing it on [Gitter channel](https://gitter.im/mycolorway/simple-module) first.
+
+If you confirm the issue is indeed a bug, you can browse the [issues page](https://github.com/mycolorway/simple-module/issues) for existing issues describing the same problem.
+
+If you found nothing on issues page, please create an new issue with detailed debug information, for example, reproduce procedure, error stacks, screenshots etc. Issues without enough debug information will probably be closed.
+
 ## Development
 
 Clone repository from github:
@@ -119,11 +127,11 @@ Now, you are ready to go.
 
 ## Publish
 
-Please make sure all test have passed before you publish new version, and you need do these preparations:
+If you want to publish new version to npm and bower, please make sure all tests have passed before you publish new version, and you need do these preparations:
 
-1. Add new release information in `CHANGELOG.md`. The format of markdown contents will matter, because build scripts will get version and release content from this file by regular expression. You can follow the format of the older release information.
+* Add new release information in `CHANGELOG.md`. The format of markdown contents will matter, because build scripts will get version and release content from this file by regular expression. You can follow the format of the older release information.
 
-2. Put your [personal API tokens](https://github.com/blog/1509-personal-api-tokens) in `/.token.json`, which is required by build scripts to request [Github API](https://developer.github.com/v3/):
+* Put your [personal API tokens](https://github.com/blog/1509-personal-api-tokens) in `/.token.json`, which is required by build scripts to request [Github API](https://developer.github.com/v3/):
 
 ```json
 {

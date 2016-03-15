@@ -10,5 +10,5 @@ gulp.task 'test', ->
 
   jasmine = new Jasmine()
   jasmine.onComplete (passed) ->
-    # process.exit(1) unless passed
+    # do nothing
   jasmine.execute [specFile]
