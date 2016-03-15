@@ -131,6 +131,8 @@ If you want to publish new version to npm and bower, please make sure all tests 
 
 * Add new release information in `CHANGELOG.md`. The format of markdown contents will matter, because build scripts will get version and release content from this file by regular expression. You can follow the format of the older release information.
 
+* Run `gulp` default task before you push the commit for new version.
+
 * Put your [personal API tokens](https://github.com/blog/1509-personal-api-tokens) in `/.token.json`, which is required by build scripts to request [Github API](https://developer.github.com/v3/):
 
 ```json
