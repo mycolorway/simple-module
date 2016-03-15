@@ -7,19 +7,6 @@ request = require 'request'
 pkg = require '../package.json'
 helper = require './helper.coffee'
 
-gulp.task 'publish.version', ->
-  newVersion = getReleaseVersion()
-  unless newVersion
-    throw new Error('Publish: Invalid version in CHANGELOG.md')
-    return
-
-  pkg.version = newVersion
-  fs.writeFileSync './package.json', JSON.stringify(pkg, null, 2)
-
-  bowerConfig = require '../bower.json'
-  bowerConfig.version = newVersion
-  fs.writeFileSync './bower.json', JSON.stringify(bowerConfig, null, 2)
-
 gulp.task 'publish.docs', ['docs.jade'], ->
   gulp.src '_docs/**/*'
     .pipe ghPages().on 'end', -> helper.removeDir '.publish'
@@ -34,17 +21,8 @@ gulp.task 'publish.createRelease', ->
   createRelease token.github
 
 gulp.task 'publish', ->
-  runSequence 'publish.version', 'compile', 'test', 'docs', 'publish.docs', 'publish.createRelease'
+  runSequence 'compile', 'test', 'docs', 'publish.docs', 'publish.createRelease'
 
-
-getReleaseVersion = ->
-  changelogs = fs.readFileSync('CHANGELOG.md').toString()
-  result = changelogs.match /## V(\d+\.\d+\.\d+)/
-
-  if result and result.length > 1
-    result[1]
-  else
-    null
 
 getReleaseContent = (version) ->
   changelogs = fs.readFileSync('CHANGELOG.md').toString()

@@ -43,11 +43,15 @@ headerTemplate =
   simple: "/* <%= name %> v<%= version %> | (c) Mycolorway Design | MIT License */\n"
 
 gulpFileHeader = (type = 'full') ->
+  now = new Date()
+  year = now.getFullYear()
+  month = _.padStart(now.getMonth() + 1, 2, '0')
+  date = now.getDate()
   header = _.template(headerTemplate[type])
     name: pkg.name
     version: pkg.version
     homepage: pkg.homepage
-    date: new Date().toLocaleString()
+    date: "#{year}-#{month}-#{date}"
 
   through.obj (file, encoding, done) ->
     headerBuffer = new Buffer header
@@ -133,7 +137,7 @@ gulpSass = (opts) ->
 gulpUglify = (opts) ->
   through.obj (file, encoding, done) ->
     opts = _.extend {fromString: true}, opts
-    
+
     try
       uglify = require 'uglify-js'
       result = uglify.minify file.contents.toString(), opts

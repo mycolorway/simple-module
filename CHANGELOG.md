@@ -1,4 +1,8 @@
 
+## V3.0.1 - 2016-03-08
+
+* FIX: incorrect publish of v3.0.0 on npm
+
 ## V3.0.0 - 2016-03-08
 
 * Fresh new start. Now Providing event emitter, mixins and plugins features for browser or node sub-modules.

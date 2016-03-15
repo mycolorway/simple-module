@@ -1,7 +1,7 @@
 {
   "name": "simple-module",
   "githubOwner": "mycolorway",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A base class for javascript modules.",
   "homepage": "http://mycolorway.github.io/simple-module",
   "repository": {
