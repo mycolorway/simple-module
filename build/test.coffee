@@ -7,14 +7,13 @@ helper = require './helper.coffee'
 gulp.task 'test.run', ->
   gulp.src 'test/**/*.coffee'
     .pipe helper.mocha()
-    # .pipe istanbul.writeReports()
 
 gulp.task 'test.coveralls', ->
   return unless process.env.CI
 
   gulp.src 'coverage/lcov.info'
     .pipe through.obj (file, encoding, done) ->
-      input = file.contents.toStirng()
+      input = file.contents.toString()
       stream = @
 
       coveralls.getBaseOptions (error, options) ->
