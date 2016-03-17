@@ -6,11 +6,7 @@
     "farthinker <farthinker@gmail.com>"
   ],
   "description": "A simple base class for js modules.",
-  "main": "dist/simple-module-bundle.js",
-  "keywords": [
-    "module",
-    "simple"
-  ],
+  "main": "dist/simple-module.js",
   "license": "MIT",
   "ignore": [
     "**/.*",

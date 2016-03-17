@@ -1,23 +1,23 @@
 SimpleModule = require '../src/simple-module.coffee'
 _ = require 'lodash'
+expect = require('chai').expect
 
 describe 'SimpleModule', ->
 
   it 'should inherit from EventEmitter', ->
     module = new SimpleModule()
-    obj =
-      listener: ->
-        console.log 'customEvent triggered'
-    spyOn obj, 'listener'
+    callCount = 0
+    listener = ->
+      callCount += 1
 
-    module.on 'customEvent', obj.listener
+    module.on 'customEvent', listener
     module.trigger 'customEvent'
-    expect(obj.listener).toHaveBeenCalled()
+    expect(callCount).to.be.equal(1)
 
-    obj.listener.calls.reset()
+    callCount = 0
     module.off 'customEvent'
     module.trigger 'customEvent'
-    expect(obj.listener).not.toHaveBeenCalled()
+    expect(callCount).to.be.equal(0)
 
   it 'should support mixins', ->
     SimpleModule.extend
@@ -28,9 +28,9 @@ describe 'SimpleModule', ->
 
     module = new SimpleModule()
 
-    expect(SimpleModule.classProperty).toBe(true)
-    expect(SimpleModule.prototype.prototypeProperty).toBe(true)
-    expect(module.prototypeProperty).toBe(true)
+    expect(SimpleModule.classProperty).to.be.equal(true)
+    expect(SimpleModule.prototype.prototypeProperty).to.be.equal(true)
+    expect(module.prototypeProperty).to.be.equal(true)
 
   it 'can have plugins', ->
     class TestPlugin extends SimpleModule
@@ -38,20 +38,19 @@ describe 'SimpleModule', ->
         super()
         this.test = true
       start: ->
-        console.log 'start test'
+        this.started = true
 
     SimpleModule.plugin 'testPlugin', TestPlugin
-    expect(SimpleModule.plugins.testPlugin).toBe(TestPlugin)
+    expect(SimpleModule.plugins.testPlugin).to.be.equal(TestPlugin)
 
     module = new SimpleModule
       plugins: ['testPlugin']
 
-    expect(module.plugins.testPlugin instanceof TestPlugin).toBe(true)
-    expect(module.plugins.testPlugin.test).toBe(true)
+    expect(module.plugins.testPlugin instanceof TestPlugin).to.be.equal(true)
+    expect(module.plugins.testPlugin.test).to.be.equal(true)
 
-    spyOn(module.plugins.testPlugin, 'start')
     module.plugins.testPlugin.start()
-    expect(module.plugins.testPlugin.start).toHaveBeenCalled()
+    expect(module.plugins.testPlugin.started).to.be.equal(true)
 
   it 'should let subclasses override default options', ->
     class ModuleA extends SimpleModule
@@ -74,7 +73,7 @@ describe 'SimpleModule', ->
     moduleX = new ModuleB
       name: 'X'
 
-    expect(moduleB.opts.name).toBe('B')
-    expect(moduleA.opts.name).toBe('A')
-    expect(module.opts.name).toBeUndefined()
-    expect(moduleX.opts.name).toBe('X')
+    expect(moduleB.opts.name).to.be.equal('B')
+    expect(moduleA.opts.name).to.be.equal('A')
+    expect(module.opts.name).to.be.undefined
+    expect(moduleX.opts.name).to.be.equal('X')

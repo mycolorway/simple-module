@@ -54,10 +54,10 @@ createRelease = (token) ->
     headers:
       Authorization: "token #{token}",
       'User-Agent': 'Mycolorway Release'
-  , (err, response, body) ->
-    if err
-      gutil.log gutil.colors.red('Error occured while requesting github release API.')
+  , (error, response, body) ->
+    if error
+      helper.handleError error
     else if response.statusCode.toString().search(/2\d\d/) > -1
       gutil.log gutil.colors.green("#{pkg.name} v#{pkg.version} released on github!")
     else
-      gutil.log gutil.colors.red("#{response.statusCode} #{JSON.stringify response.body}")
+      helper.handleError gutil.colors.red("#{response.statusCode} #{JSON.stringify response.body}")

@@ -2,6 +2,7 @@
 
 [![Latest Version](https://img.shields.io/npm/v/simple-module.svg)](https://www.npmjs.com/package/simple-module)
 [![Build Status](https://img.shields.io/travis/mycolorway/simple-module.svg)](https://travis-ci.org/mycolorway/simple-module)
+[![Coveralls](https://img.shields.io/coveralls/mycolorway/simple-module.svg)](https://coveralls.io/github/mycolorway/simple-module)
 [![David](https://img.shields.io/david/mycolorway/simple-module.svg)](https://david-dm.org/mycolorway/simple-module)
 [![David](https://img.shields.io/david/dev/mycolorway/simple-module.svg)](https://david-dm.org/mycolorway/simple-module#info=devDependencies)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/mycolorway/simple-module)
@@ -95,13 +96,13 @@ Install via bower:
 bower install --save simple-module
 ```
 
-## Submitting Issues
+## Issues
 
-If have issues while using this module, please consider discussing it on [Gitter channel](https://gitter.im/mycolorway/simple-module) first.
+If you have issues about this module, please consider discussing it on [Gitter channel](https://gitter.im/mycolorway/simple-module) first.
 
-If you confirm the issue is indeed a bug, you can browse the [issues page](https://github.com/mycolorway/simple-module/issues) for existing issues describing the same problem.
+If you confirm the issue is indeed a bug, please browse the [issues page](https://github.com/mycolorway/simple-module/issues) for existing issues describing the same problem before creating new issue.
 
-If you found nothing on issues page, please create an new issue with detailed debug information, for example, reproduce procedure, error stacks, screenshots etc. Issues without enough debug information will probably be closed.
+When you create new issue, please describe it with detailed information, for example, demo code, error stacks, screenshots etc. Issues without enough debug information will probably be closed.
 
 ## Development
 

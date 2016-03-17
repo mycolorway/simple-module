@@ -17,16 +17,6 @@ removeDir = (dirPath) ->
 
   fs.rmdirSync dirPath
 
-deleteRequireCache = (id) ->
-  return unless id and id.indexOf('node_modules') == -1
-
-  files = require.cache[id]
-  return unless files
-
-  Object.keys(files.children).forEach (child) ->
-    deleteRequireCache files.children[child].id
-  delete require.cache[id]
-
 headerTemplate =
   full: """
     /**
@@ -97,7 +87,7 @@ gulpJade = (opts) ->
       result = compile _.extend {}, opts.locals, file.data
       file.contents = new Buffer result
     catch e
-      gutil.log gutil.colors.red "jade compile error: #{e.message}"
+      handleError e, @
     @push file
     done()
 
@@ -109,7 +99,7 @@ gulpCoffee = (opts) ->
       coffee = require 'coffee-script'
       result = coffee.compile str, opts
     catch e
-      gutil.log gutil.colors.red "coffee compile error: #{e.message}"
+      handleError e, @
 
     file.contents = new Buffer result
     file.path = gutil.replaceExtension file.path, '.js'
@@ -127,7 +117,7 @@ gulpSass = (opts) ->
       sass = require 'node-sass'
       result = sass.renderSync opts
     catch e
-      gutil.log gutil.colors.red "sass compile error: #{e.message}"
+      handleError e, @
 
     file.contents = new Buffer result.css
     file.path = gutil.replaceExtension file.path, '.css'
@@ -142,16 +132,79 @@ gulpUglify = (opts) ->
       uglify = require 'uglify-js'
       result = uglify.minify file.contents.toString(), opts
     catch e
-      gutil.log gutil.colors.red "uglify compile error: #{e.message}"
+      handleError e, @
 
     file.contents = new Buffer result.code
     @push file
     done()
 
+requireCache =
+  marked: {}
+  mark: ->
+    Object.keys(require.cache).forEach (key) ->
+      requireCache.marked[key] = true
+  clear: ->
+    Object.keys(require.cache).forEach (key) ->
+      if !requireCache.marked[key] && !/\.node$/.test(key)
+        delete require.cache[key]
+
+handleError = (error, stream) ->
+  if stream
+    stream.emit 'error', new gutil.PluginError 'gulp-build', error,
+      stack: error.stack
+      showStack: !!error.stack
+  else
+    gutil.log gutils.colors.red("gulp-build error: #{error.message || error}")
+
+gulpMocha = (opts = {}) ->
+  require 'coffee-script/register'
+
+  coverageVar = "$$cov_#{Date.now()}$$"
+  require('coffee-coverage').register
+    instrumentor: 'istanbul'
+    basePath: process.cwd()
+    exclude: [
+      '/test'
+      '/node_modules'
+      '/.git'
+      'gulpfile.coffee'
+      '/build'
+      '/docs'
+    ]
+    coverageVar: coverageVar
+    initAll: true
+
+  Mocha = require 'mocha'
+  mocha = new Mocha _.extend
+    reporter: 'spec'
+  , opts
+
+  requireCache.mark()
+
+  through.obj (file, encoding, done) ->
+    mocha.addFile file.path
+    @push file
+    done()
+  , (done) ->
+    try
+      mocha.run (errorCount) ->
+        istanbul = require 'istanbul'
+        reporter = new istanbul.Reporter()
+        collector = new istanbul.Collector()
+
+        reporter.addAll ['lcov', 'text', 'text-summary']
+        collector.add(global[coverageVar] || {})
+
+        reporter.write collector, false, ->
+          requireCache.clear()
+          done()
+    catch error
+      requireCache.clear()
+      handleError error, @
+      done()
 
 module.exports =
   removeDir: removeDir
-  deleteRequireCache: deleteRequireCache
   fileHeader: gulpFileHeader
   rename: gulpRename
   data: gulpData
@@ -159,3 +212,6 @@ module.exports =
   coffee: gulpCoffee
   sass: gulpSass
   uglify: gulpUglify
+  requireCache: requireCache
+  handleError: handleError
+  mocha: gulpMocha
