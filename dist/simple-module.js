@@ -70,7 +70,7 @@
         return;
       }
       if (typeof cls !== 'function') {
-        throw new Error('SimpleModule.plugin: second param should be a class reference');
+        throw new Error('SimpleModule.plugin: second param should be a class');
         return;
       }
       this.plugins[name] = cls;

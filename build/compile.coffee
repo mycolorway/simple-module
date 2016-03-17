@@ -1,7 +1,13 @@
 gulp = require 'gulp'
 fs = require 'fs'
 runSequence = require 'run-sequence'
+coffeelint = require 'gulp-coffeelint'
 helper = require './helper.coffee'
+
+gulp.task 'compile.lint', ->
+  gulp.src 'src/**/*.coffee'
+    .pipe coffeelint()
+    .pipe coffeelint.reporter()
 
 gulp.task 'compile.version', ->
   newVersion = getReleaseVersion()
@@ -37,8 +43,14 @@ gulp.task 'compile.uglify', ->
       suffix: '.min'
     .pipe gulp.dest('dist/')
 
-gulp.task 'compile', ->
-  runSequence 'compile.version', 'compile.coffee', 'compile.uglify'
+gulp.task 'compile', (done) ->
+  runSequence(
+    'compile.lint',
+    'compile.version',
+    'compile.coffee',
+    'compile.uglify',
+    done
+  )
 
 
 getReleaseVersion = ->

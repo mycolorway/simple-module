@@ -1,8 +1,13 @@
 gulp = require 'gulp'
 runSequence = require 'run-sequence'
 path = require 'path'
+coffeelint = require 'gulp-coffeelint'
 helper = require './helper.coffee'
 
+gulp.task 'docs.lint', ->
+  gulp.src 'docs/**/*.coffee'
+    .pipe coffeelint()
+    .pipe coffeelint.reporter()
 
 gulp.task 'docs.clean', ->
   helper.removeDir '_docs'
@@ -29,9 +34,9 @@ gulp.task 'docs.sass', ->
     .pipe helper.sass()
     .pipe gulp.dest('_docs/')
 
-gulp.task 'docs', ->
-  runSequence 'docs.clean', [
+gulp.task 'docs', (done) ->
+  runSequence 'docs.lint', 'docs.clean', [
     'docs.jade',
     'docs.coffee',
-    'docs.sass'
-  ]
+    'docs.sass',
+  ], done

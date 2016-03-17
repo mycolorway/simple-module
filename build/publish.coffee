@@ -58,6 +58,8 @@ createRelease = (token) ->
     if error
       helper.handleError error
     else if response.statusCode.toString().search(/2\d\d/) > -1
-      gutil.log gutil.colors.green("#{pkg.name} v#{pkg.version} released on github!")
+      message = "#{pkg.name} v#{pkg.version} released on github!"
+      gutil.log gutil.colors.green successMsg
     else
-      helper.handleError gutil.colors.red("#{response.statusCode} #{JSON.stringify response.body}")
+      message = "#{response.statusCode} #{JSON.stringify response.body}"
+      helper.handleError gutil.colors.red message

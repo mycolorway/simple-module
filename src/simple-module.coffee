@@ -5,13 +5,12 @@ else
   EventEmitter = window.EventEmitter2
   _            = window._
 
-# {SimpleModule} provides mixins, plugin mechanism and event emitter for subclasses.
 class SimpleModule extends EventEmitter
 
   # Add properties to {SimpleModule} class.
   #
-  # @param [Object] obj The properties of {obj} will be copied to {SimpleModule},
-  #                     except property named `extended`, which is a function
+  # @param [Object] obj The properties of {obj} will be copied to {SimpleModule}
+  #                     , except property named `extended`, which is a function
   #                     that will be called after copy operation.
   @extend: (obj) ->
     unless obj and typeof obj == 'object'
@@ -50,11 +49,11 @@ class SimpleModule extends EventEmitter
   #
   @plugin: (name, cls) ->
     unless name and typeof name == 'string'
-      throw new Error('SimpleModule.plugin: first param should be a string')
+      throw new Error 'SimpleModule.plugin: first param should be a string'
       return
 
     unless typeof cls == 'function'
-      throw new Error('SimpleModule.plugin: second param should be a class reference')
+      throw new Error 'SimpleModule.plugin: second param should be a class'
       return
 
     @plugins[name] = cls

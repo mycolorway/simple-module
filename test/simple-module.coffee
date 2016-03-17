@@ -13,11 +13,16 @@ describe 'SimpleModule', ->
     module.on 'customEvent', listener
     module.trigger 'customEvent'
     expect(callCount).to.be.equal(1)
-
-    callCount = 0
     module.off 'customEvent'
     module.trigger 'customEvent'
-    expect(callCount).to.be.equal(0)
+    expect(callCount).to.be.equal(1)
+
+    module.on 'customEvent', listener
+    module.trigger 'customEvent'
+    expect(callCount).to.be.equal(2)
+    module.off 'customEvent', listener
+    module.trigger 'customEvent'
+    expect(callCount).to.be.equal(2)
 
   it 'should support mixins', ->
     SimpleModule.extend

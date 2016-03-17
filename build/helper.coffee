@@ -30,7 +30,8 @@ headerTemplate =
      * Date: <%= date %>
      */\n\n
   """
-  simple: "/* <%= name %> v<%= version %> | (c) Mycolorway Design | MIT License */\n"
+  simple: "/* <%= name %> v<%= version %> \
+    | (c) Mycolorway Design | MIT License */\n"
 
 gulpFileHeader = (type = 'full') ->
   now = new Date()
