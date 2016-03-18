@@ -5,11 +5,12 @@ runSequence = require 'run-sequence'
 fs = require 'fs'
 request = require 'request'
 pkg = require '../package.json'
-helper = require './helper.coffee'
+removeDir = require './helpers/remove-dir.coffee'
+handleError = require './helpers/error.coffee'
 
 gulp.task 'publish.docs', ['docs.jade'], ->
   gulp.src '_docs/**/*'
-    .pipe ghPages().on 'end', -> helper.removeDir '.publish'
+    .pipe ghPages().on 'end', -> removeDir '.publish'
 
 gulp.task 'publish.createRelease', ->
   try
@@ -24,19 +25,9 @@ gulp.task 'publish', ->
   runSequence 'compile', 'test', 'docs', 'publish.docs', 'publish.createRelease'
 
 
-getReleaseContent = (version) ->
-  changelogs = fs.readFileSync('CHANGELOG.md').toString()
-  re = new RegExp "## V#{version.replace('.', '\\.')}.+\\n\\n((?:\\* .*\\n)+)"
-  result = changelogs.match re
-
-  if result and result.length > 1
-    result[1]
-  else
-    null
-
 createRelease = (token) ->
   pkg = require '../package.json'
-  content = getReleaseContent pkg.version
+  content = changelogs.latestContent
   unless content
     throw new Error('Publish: Invalid release content in CHANGELOG.md')
     return
@@ -56,10 +47,10 @@ createRelease = (token) ->
       'User-Agent': 'Mycolorway Release'
   , (error, response, body) ->
     if error
-      helper.handleError error
+      handleError error
     else if response.statusCode.toString().search(/2\d\d/) > -1
       message = "#{pkg.name} v#{pkg.version} released on github!"
       gutil.log gutil.colors.green successMsg
     else
       message = "#{response.statusCode} #{JSON.stringify response.body}"
-      helper.handleError gutil.colors.red message
+      handleError gutil.colors.red message

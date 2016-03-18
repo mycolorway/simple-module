@@ -1,16 +1,18 @@
 gulp = require 'gulp'
 fs = require 'fs'
 runSequence = require 'run-sequence'
-coffeelint = require 'gulp-coffeelint'
-helper = require './helper.coffee'
-
-gulp.task 'compile.lint', ->
-  gulp.src 'src/**/*.coffee'
-    .pipe coffeelint()
-    .pipe coffeelint.reporter()
+coffeelint = require './helpers/coffeelint.coffee'
+coffee = require './helpers/coffee.coffee'
+sasslint = require './helpers/sasslint.coffee'
+sass = require './helpers/sass.coffee'
+sass = require './helpers/autoprefixer.coffee'
+header = require './helpers/header.coffee'
+rename = require './helpers/rename.coffee'
+uglify = require './helpers/uglify.coffee'
+changelogs = require './helpers/changelogs.coffee'
 
 gulp.task 'compile.version', ->
-  newVersion = getReleaseVersion()
+  newVersion = changelogs.lastestVersion
   unless newVersion
     throw new Error('Publish: Invalid version in CHANGELOG.md')
     return
@@ -25,39 +27,32 @@ gulp.task 'compile.version', ->
 
 gulp.task 'compile.coffee', ->
   gulp.src 'src/**/*.coffee'
-    .pipe helper.coffee()
-    .pipe helper.fileHeader()
+    .pipe coffeelint()
+    .pipe coffee()
+    .pipe header()
     .pipe gulp.dest('dist/')
 
 gulp.task 'compile.sass', ->
   gulp.src 'src/**/*.scss'
-    .pipe helper.sass()
-    .pipe helper.fileHeader()
+    .pipe sasslint()
+    .pipe sass()
+    .pipe autoprefixer
+      browsers: ['last 2 versions']
+    .pipe header()
     .pipe gulp.dest('dist/')
 
 gulp.task 'compile.uglify', ->
   gulp.src ['dist/**/*.js', '!dist/**/*.min.js']
-    .pipe helper.uglify()
-    .pipe helper.fileHeader('simple')
-    .pipe helper.rename
+    .pipe uglify()
+    .pipe header('simple')
+    .pipe rename
       suffix: '.min'
     .pipe gulp.dest('dist/')
 
 gulp.task 'compile', (done) ->
   runSequence(
-    'compile.lint',
     'compile.version',
     'compile.coffee',
     'compile.uglify',
     done
   )
-
-
-getReleaseVersion = ->
-  changelogs = fs.readFileSync('CHANGELOG.md').toString()
-  result = changelogs.match /## V(\d+\.\d+\.\d+)/
-
-  if result and result.length > 1
-    result[1]
-  else
-    null

@@ -1,43 +1,49 @@
 $page-width: 1280px;
 $sidebar-width: 320px;
 
+$text-color: #333;
+$em-text-color: #000;
+$link-color: #4078c0;
+$link-hover-color: #6da1e3;
+
+
+
 html {
   height: 100%;
 }
 
 body {
+  color: $text-color;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
   height: 100%;
-  color: #333333;
+  line-height: 1.5;
   margin: 0;
   padding: 0;
-  font-family: "Helvetica Neue", Helvetica, sans-serif;
-  line-height: 1.5;
 
   a {
-    color: #4078c0;
+    color: $link-color;;
     text-decoration: none;
 
     &:hover,
     &:active {
-      color: #6da1e3;
+      color: $link-hover-color;
     }
   }
 }
 
 .page {
-  min-height: 100%;
-  display: -webkit-flex;
   display: flex;
+  min-height: 100%;
   font-size: 0;
 
+  $sidebar-bg: #f3f3f3;
   .sidebar {
     width: $sidebar-width;
     box-sizing: border-box;
     padding: 30px 30px 30px 40px;
-    background: #f3f3f3;
+    background: $sidebar-bg;
     font-size: 16px;
     flex: 0 0 auto;
-    -webkit-flex: 0 0 auto;
 
     .title {
       font: {
@@ -45,7 +51,7 @@ body {
         size: 32px;
         family: "Trebuchet MS", Helvetica, sans-serif;
       }
-      color: #000000;
+      color: $em-text-color;
     }
 
     .author {
@@ -92,7 +98,6 @@ body {
     box-sizing: border-box;
     font-size: 16px;
     flex: 0 0 auto;
-    -webkit-flex: 0 0 auto;
 
     .api-item {
       line-height: 22px;
