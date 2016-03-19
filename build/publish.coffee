@@ -4,6 +4,7 @@ ghPages = require 'gulp-gh-pages'
 runSequence = require 'run-sequence'
 fs = require 'fs'
 request = require 'request'
+changelogs = require './helpers/changelogs'
 removeDir = require './helpers/remove-dir'
 handleError = require './helpers/error'
 
