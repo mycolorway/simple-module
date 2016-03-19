@@ -2,8 +2,6 @@
 engines:
   coffeelint:
     enabled: true
-  scss-lint:
-    enabled: true
   fixme:
     enabled: true
 ratings:

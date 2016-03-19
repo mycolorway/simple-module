@@ -3,7 +3,7 @@ through = require 'through2'
 path = require 'path'
 sass = require 'node-sass'
 _ = require 'lodash'
-handleError = require './error.coffee'
+handleError = require './error'
 
 module.exports = (opts) ->
   through.obj (file, encoding, done) ->

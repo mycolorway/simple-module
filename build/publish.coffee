@@ -4,9 +4,8 @@ ghPages = require 'gulp-gh-pages'
 runSequence = require 'run-sequence'
 fs = require 'fs'
 request = require 'request'
-pkg = require '../package.json'
-removeDir = require './helpers/remove-dir.coffee'
-handleError = require './helpers/error.coffee'
+removeDir = require './helpers/remove-dir'
+handleError = require './helpers/error'
 
 gulp.task 'publish.docs', ['docs.jade'], ->
   gulp.src '_docs/**/*'
@@ -26,7 +25,7 @@ gulp.task 'publish', ->
 
 
 createRelease = (token) ->
-  pkg = require '../package.json'
+  pkg = require '../package'
   content = changelogs.latestContent
   unless content
     throw new Error('Publish: Invalid release content in CHANGELOG.md')

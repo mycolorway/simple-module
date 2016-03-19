@@ -1,7 +1,7 @@
 through = require 'through2'
 uglify = require 'uglify-js'
 _ = require 'lodash'
-handleError = require './error.coffee'
+handleError = require './error'
 
 module.exports = (opts) ->
   through.obj (file, encoding, done) ->

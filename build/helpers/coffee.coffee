@@ -1,7 +1,7 @@
 gutil = require 'gulp-util'
 through = require 'through2'
 coffee = require 'coffee-script'
-handleError = require './error.coffee'
+handleError = require './error'
 
 module.exports = (opts) ->
   through.obj (file, encoding, done) ->

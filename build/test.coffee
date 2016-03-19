@@ -1,6 +1,6 @@
 gulp = require 'gulp'
-coffeelint = require './helpers/coffeelint.coffee'
-mocha = require './helpers/mocha.coffee'
+coffeelint = require './helpers/coffeelint'
+mocha = require './helpers/mocha'
 
 gulp.task 'test', ->
   gulp.src 'test/**/*.coffee'

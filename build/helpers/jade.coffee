@@ -2,7 +2,7 @@ through = require 'through2'
 _ = require 'lodash'
 gutil = require 'gulp-util'
 jade = require 'jade'
-handleError = require './error.coffee'
+handleError = require './error'
 
 module.exports = (opts) ->
   through.obj (file, encoding, done) ->

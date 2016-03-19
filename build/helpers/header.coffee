@@ -1,6 +1,6 @@
 through = require 'through2'
 _ = require 'lodash'
-pkg = require '../../package.json'
+pkg = require '../../package'
 
 headerTemplate =
   full: """

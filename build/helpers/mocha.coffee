@@ -4,7 +4,7 @@ coffeeCoverage = require 'coffee-coverage'
 Mocha = require 'mocha'
 istanbul = require 'istanbul'
 _ = require 'lodash'
-handleError = require './error.coffee'
+handleError = require './error'
 
 requireCache =
   marked: {}

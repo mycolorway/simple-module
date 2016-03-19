@@ -2,6 +2,7 @@ through = require 'through2'
 coffeelint = require 'coffeelint'
 Reporter = require 'coffeelint/lib/reporters/default'
 configFinder = require 'coffeelint/lib/configfinder'
+handleError = require './error'
 
 module.exports = ->
   through.obj (file, encoding, done) ->
@@ -13,6 +14,7 @@ module.exports = ->
     if summary.errorCount > 0 || summary.warningCount > 0
       reporter = new Reporter errorReport
       reporter.publish()
+      handleError 'coffeelint failed with errors or warnings', @
 
     @push file
     done()
