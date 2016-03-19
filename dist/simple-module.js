@@ -30,7 +30,6 @@
       var key, ref, val;
       if (!(obj && typeof obj === 'object')) {
         throw new Error('SimpleModule.extend: param should be an object');
-        return;
       }
       for (key in obj) {
         val = obj[key];
@@ -48,7 +47,6 @@
       var key, ref, val;
       if (!(obj && typeof obj === 'object')) {
         throw new Error('SimpleModule.include: param should be an object');
-        return;
       }
       for (key in obj) {
         val = obj[key];
@@ -67,11 +65,9 @@
     SimpleModule.plugin = function(name, cls) {
       if (!(name && typeof name === 'string')) {
         throw new Error('SimpleModule.plugin: first param should be a string');
-        return;
       }
       if (typeof cls !== 'function') {
         throw new Error('SimpleModule.plugin: second param should be a class');
-        return;
       }
       this.plugins[name] = cls;
       return this;

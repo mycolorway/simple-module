@@ -15,7 +15,6 @@ class SimpleModule extends EventEmitter
   @extend: (obj) ->
     unless obj and typeof obj == 'object'
       throw new Error('SimpleModule.extend: param should be an object')
-      return
 
     for key, val of obj when key not in ['included', 'extended']
       @[key] = val
@@ -31,7 +30,6 @@ class SimpleModule extends EventEmitter
   @include: (obj) ->
     unless obj and typeof obj == 'object'
       throw new Error('SimpleModule.include: param should be an object')
-      return
 
     for key, val of obj when key not in ['included', 'extended']
       @::[key] = val
@@ -50,11 +48,9 @@ class SimpleModule extends EventEmitter
   @plugin: (name, cls) ->
     unless name and typeof name == 'string'
       throw new Error 'SimpleModule.plugin: first param should be a string'
-      return
 
     unless typeof cls == 'function'
       throw new Error 'SimpleModule.plugin: second param should be a class'
-      return
 
     @plugins[name] = cls
     @

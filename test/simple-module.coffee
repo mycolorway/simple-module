@@ -4,7 +4,15 @@ expect = require('chai').expect
 
 describe 'SimpleModule', ->
 
-  it 'should inherit from EventEmitter', ->
+  class TestPlugin extends SimpleModule
+    constructor: (@module) ->
+      super()
+      this.test = true
+    start: ->
+      this.started = true
+
+
+  it 'should inherit from EventEmitter', (done) ->
     module = new SimpleModule()
     callCount = 0
     listener = ->
@@ -24,30 +32,61 @@ describe 'SimpleModule', ->
     module.trigger 'customEvent'
     expect(callCount).to.be.equal(2)
 
-  it 'should support mixins', ->
+    module.one 'customEvent', listener
+    module.trigger 'customEvent'
+    module.trigger 'customEvent'
+    expect(callCount).to.be.equal(3)
+
+    module.on 'customEvent', (i) ->
+      new Promise (resolve) ->
+        setTimeout ->
+          resolve i
+        , 50
+    module.on 'customEvent', (i) ->
+      i + 1
+    module.triggerAsync 'customEvent', 1
+      .then (results) ->
+        expect(results.length).to.be.equal(2)
+        expect(results[0]).to.be.equal(1)
+        expect(results[1]).to.be.equal(2)
+        done()
+
+  it 'can extend properties', ->
+    extendWithWrongArgs = ->
+      SimpleModule.extend 'test'
+    expect(extendWithWrongArgs).to.throw(/param should be an object/)
+
     SimpleModule.extend
       classProperty: true
+    expect(SimpleModule.classProperty).to.be.equal(true)
+
+  it 'can include prototype properties', ->
+    includeWithWrongArgs = ->
+      SimpleModule.include 'test'
+    expect(includeWithWrongArgs).to.throw(/param should be an object/)
 
     SimpleModule.include
       prototypeProperty: true
-
     module = new SimpleModule()
-
-    expect(SimpleModule.classProperty).to.be.equal(true)
     expect(SimpleModule.prototype.prototypeProperty).to.be.equal(true)
     expect(module.prototypeProperty).to.be.equal(true)
 
-  it 'can have plugins', ->
-    class TestPlugin extends SimpleModule
-      constructor: (@module) ->
-        super()
-        this.test = true
-      start: ->
-        this.started = true
+  it 'can register plugin', ->
+    registerWithoutName = ->
+      SimpleModule.plugin()
+    expect(registerWithoutName).to.throw(/first param should be a string/)
+    expect(SimpleModule.plugins.testPlugin).to.be.undefined
+
+    registerWithoutClass = ->
+      SimpleModule.plugin('testPlugin')
+    expect(registerWithoutClass).to.throw(/second param should be a class/)
+    expect(SimpleModule.plugins.testPlugin).to.be.undefined
 
     SimpleModule.plugin 'testPlugin', TestPlugin
     expect(SimpleModule.plugins.testPlugin).to.be.equal(TestPlugin)
 
+  it 'can create instance with plugin', ->
+    SimpleModule.plugin 'testPlugin', TestPlugin
     module = new SimpleModule
       plugins: ['testPlugin']
 
