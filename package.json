@@ -28,7 +28,6 @@
     "coffee-coverage": "^1.0.1",
     "coffee-script": "^1.10.0",
     "coffeelint": "^1.15.0",
-    "coveralls": "^2.11.8",
     "gulp": "^3.9.1",
     "gulp-gh-pages": "^0.5.4",
     "gulp-util": "^3.0.7",

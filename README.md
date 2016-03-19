@@ -2,7 +2,8 @@
 
 [![Latest Version](https://img.shields.io/npm/v/simple-module.svg)](https://www.npmjs.com/package/simple-module)
 [![Build Status](https://img.shields.io/travis/mycolorway/simple-module.svg)](https://travis-ci.org/mycolorway/simple-module)
-[![Coveralls](https://img.shields.io/coveralls/mycolorway/simple-module.svg)](https://coveralls.io/github/mycolorway/simple-module)
+[![Code Climate](https://img.shields.io/codeclimate/coverage/github/mycolorway/simple-module.svg)](https://codeclimate.com/github/mycolorway/simple-module/coverage)
+[![Code Climate](https://img.shields.io/codeclimate/github/mycolorway/simple-module.svg)](https://codeclimate.com/github/mycolorway/simple-module)
 [![David](https://img.shields.io/david/mycolorway/simple-module.svg)](https://david-dm.org/mycolorway/simple-module)
 [![David](https://img.shields.io/david/dev/mycolorway/simple-module.svg)](https://david-dm.org/mycolorway/simple-module#info=devDependencies)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/mycolorway/simple-module)

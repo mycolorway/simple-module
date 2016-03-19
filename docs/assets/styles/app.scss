@@ -33,15 +33,16 @@ body {
 
 .page {
   display: flex;
-  min-height: 100%;
   font-size: 0;
+  min-height: 100%;
 
   $sidebar-bg: #f3f3f3;
+
   .sidebar {
+    background: $sidebar-bg;
     width: $sidebar-width;
     box-sizing: border-box;
     padding: 30px 30px 30px 40px;
-    background: $sidebar-bg;
     font-size: 16px;
     flex: 0 0 auto;
 
