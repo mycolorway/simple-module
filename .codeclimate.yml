@@ -4,8 +4,6 @@ engines:
     enabled: true
   scss-lint:
     enabled: true
-  nodesecurity:
-    enabled: true
   fixme:
     enabled: true
 ratings:
