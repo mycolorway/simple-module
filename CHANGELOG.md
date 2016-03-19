@@ -1,4 +1,10 @@
 
+## V3.0.2 - 2016-03-08
+
+* FIX: remove useless return after throwing error
+* ADD: coffeelint build task
+* ADD: test coverage build task and increase test coverage
+
 ## V3.0.1 - 2016-03-08
 
 * FIX: incorrect publish of v3.0.0 on npm
