@@ -1,9 +1,5 @@
-if (isNode = typeof module == 'object' and module.exports)
-  EventEmitter = require 'eventemitter2'
-  _            = require 'lodash'
-else
-  EventEmitter = window.EventEmitter2
-  _            = window._
+EventEmitter = require 'eventemitter2'
+_            = require 'lodash'
 
 class SimpleModule extends EventEmitter
 
@@ -88,7 +84,4 @@ class SimpleModule extends EventEmitter
     @emitAsync args...
 
 
-if isNode
-  module.exports = SimpleModule
-else
-  window.SimpleModule = SimpleModule
+module.exports = SimpleModule

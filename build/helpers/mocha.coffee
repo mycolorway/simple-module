@@ -1,10 +1,24 @@
-require 'coffee-script/register'
 through = require 'through2'
 coffeeCoverage = require 'coffee-coverage'
 Mocha = require 'mocha'
 istanbul = require 'istanbul'
 _ = require 'lodash'
 handleError = require './error'
+
+coverageVar = '__coverage__'
+coffeeCoverage.register
+  instrumentor: 'istanbul'
+  basePath: process.cwd()
+  exclude: [
+    '/test'
+    '/node_modules'
+    '/.git'
+    'gulpfile.coffee'
+    '/build'
+    '/docs'
+  ]
+  coverageVar: coverageVar
+  initAll: true
 
 requireCache =
   marked: {}
@@ -17,21 +31,6 @@ requireCache =
         delete require.cache[key]
 
 module.exports = (opts = {}) ->
-  coverageVar = "$$cov_#{Date.now()}$$"
-  coffeeCoverage.register
-    instrumentor: 'istanbul'
-    basePath: process.cwd()
-    exclude: [
-      '/test'
-      '/node_modules'
-      '/.git'
-      'gulpfile.coffee'
-      '/build'
-      '/docs'
-    ]
-    coverageVar: coverageVar
-    initAll: true
-
   mocha = new Mocha _.extend
     reporter: 'spec'
   , opts

@@ -2,7 +2,7 @@ gulp = require 'gulp'
 fs = require 'fs'
 runSequence = require 'run-sequence'
 coffeelint = require './helpers/coffeelint'
-coffee = require './helpers/coffee'
+browserify = require './helpers/browserify'
 sass = require './helpers/sass'
 header = require './helpers/header'
 rename = require './helpers/rename'
@@ -26,7 +26,7 @@ gulp.task 'compile.version', ->
 gulp.task 'compile.coffee', ->
   gulp.src 'src/**/*.coffee'
     .pipe coffeelint()
-    .pipe coffee()
+    .pipe browserify()
     .pipe header()
     .pipe gulp.dest('dist/')
 
