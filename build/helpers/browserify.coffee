@@ -3,11 +3,12 @@ _ = require 'lodash'
 through = require 'through2'
 coffee = require 'coffee-script'
 browserify = require 'browserify'
+shim = require 'browserify-shim'
 handleError = require './error'
 
 module.exports = (opts) ->
   b = browserify _.extend
-    transform: [coffeeify]
+    transform: [coffeeify, shim]
     standalone: 'SimpleModule'
     bundleExternal: false
   , opts

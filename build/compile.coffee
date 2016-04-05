@@ -2,6 +2,7 @@ gulp = require 'gulp'
 fs = require 'fs'
 runSequence = require 'run-sequence'
 coffeelint = require './helpers/coffeelint'
+coffee = require './helpers/coffee'
 browserify = require './helpers/browserify'
 sass = require './helpers/sass'
 header = require './helpers/header'
@@ -26,8 +27,18 @@ gulp.task 'compile.version', ->
 gulp.task 'compile.coffee', ->
   gulp.src 'src/**/*.coffee'
     .pipe coffeelint()
+    .pipe coffee
+      bare: true
+    .pipe header()
+    .pipe gulp.dest('dist/')
+
+gulp.task 'compile.bundle', ->
+  gulp.src 'src/**/*.coffee'
+    .pipe coffeelint()
     .pipe browserify()
     .pipe header()
+    .pipe rename
+      suffix: '-bundle'
     .pipe gulp.dest('dist/')
 
 gulp.task 'compile.sass', ->
@@ -47,7 +58,7 @@ gulp.task 'compile.uglify', ->
 gulp.task 'compile', (done) ->
   runSequence(
     'compile.version',
-    'compile.coffee',
+    ['compile.coffee', 'compile.bundle'],
     'compile.uglify',
     done
   )
