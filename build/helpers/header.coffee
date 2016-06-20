@@ -1,29 +1,15 @@
+fs = require 'fs'
 through = require 'through2'
 _ = require 'lodash'
 pkg = require '../../package'
-
-headerTemplate =
-  full: """
-    /**
-     * <%= name %> v<%= version %>
-     * <%= homepage %>
-     *
-     * Copyright Mycolorway Design
-     * Released under the MIT license
-     * <%= homepage %>/license.html
-     *
-     * Date: <%= date %>
-     */\n\n
-  """
-  simple: "/* <%= name %> v<%= version %> \
-    | (c) Mycolorway Design | MIT License */\n"
 
 module.exports = (type = 'full') ->
   now = new Date()
   year = now.getFullYear()
   month = _.padStart(now.getMonth() + 1, 2, '0')
   date = now.getDate()
-  header = _.template(headerTemplate[type])
+  tpl = fs.readFileSync("build/templates/#{type}-header.txt").toString()
+  header = _.template(tpl)
     name: pkg.name
     version: pkg.version
     homepage: pkg.homepage

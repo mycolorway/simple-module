@@ -1,4 +1,10 @@
 
+## V3.0.3 - 2016-06-20
+
+* CHG: use jQuery 3.0 instead of EventEmitter2 and lodash
+* CHG: use phantomjs for browser testing
+* CHG: improve bundle technique, which makes it an UMD module since now.
+
 ## V3.0.2 - 2016-03-08
 
 * FIX: remove useless return after throwing error

@@ -1,26 +1,26 @@
 /**
- * simple-module v3.0.2
+ * simple-module v3.0.3
  * http://mycolorway.github.io/simple-module
  *
  * Copyright Mycolorway Design
  * Released under the MIT license
  * http://mycolorway.github.io/simple-module/license.html
  *
- * Date: 2016-04-5
+ * Date: 2016-06-20
  */
-
-var EventEmitter, SimpleModule, _,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty,
+;(function(root, factory) {
+  if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('jquery'));
+  } else {
+    root.SimpleModule = factory(root.jQuery);
+  }
+}(this, function ($) {
+var define, module, exports;
+var b = (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var SimpleModule,
   slice = [].slice;
 
-EventEmitter = require('eventemitter2');
-
-_ = require('lodash');
-
-SimpleModule = (function(superClass) {
-  extend(SimpleModule, superClass);
-
+SimpleModule = (function() {
   SimpleModule.extend = function(obj) {
     var key, ref, val;
     if (!(obj && typeof obj === 'object')) {
@@ -75,8 +75,7 @@ SimpleModule = (function(superClass) {
   SimpleModule.prototype.plugins = {};
 
   function SimpleModule(opts) {
-    SimpleModule.__super__.constructor.call(this);
-    this.opts = _.extend({}, SimpleModule.opts, opts);
+    this.opts = $.extend({}, SimpleModule.opts, opts);
     this.opts.plugins.forEach((function(_this) {
       return function(name) {
         return _this.plugins[name] = new SimpleModule.plugins[name](_this);
@@ -84,34 +83,37 @@ SimpleModule = (function(superClass) {
     })(this));
   }
 
-  SimpleModule.prototype.off = function(name, listener) {
-    if (_.isFunction(listener)) {
-      return SimpleModule.__super__.off.call(this, name, listener);
-    } else {
-      return this.removeAllListeners(name);
-    }
+  SimpleModule.prototype.on = function() {
+    var args, ref;
+    args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+    return (ref = $(this)).on.apply(ref, args);
   };
 
-  SimpleModule.prototype.one = function() {
-    var args;
+  SimpleModule.prototype.off = function() {
+    var args, ref;
     args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    return this.once.apply(this, args);
+    return (ref = $(this)).off.apply(ref, args);
   };
 
   SimpleModule.prototype.trigger = function() {
-    var args;
+    var args, ref;
     args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    return this.emit.apply(this, args);
+    return (ref = $(this)).triggerHandler.apply(ref, args);
   };
 
-  SimpleModule.prototype.triggerAsync = function() {
-    var args;
+  SimpleModule.prototype.one = function() {
+    var args, ref;
     args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    return this.emitAsync.apply(this, args);
+    return (ref = $(this)).one.apply(ref, args);
   };
 
   return SimpleModule;
 
-})(EventEmitter);
+})();
 
 module.exports = SimpleModule;
+
+},{}]},{},[1]);
+
+return b(1);
+}));

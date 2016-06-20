@@ -3,7 +3,6 @@
 [![Latest Version](https://img.shields.io/npm/v/simple-module.svg)](https://www.npmjs.com/package/simple-module)
 [![Build Status](https://img.shields.io/travis/mycolorway/simple-module.svg)](https://travis-ci.org/mycolorway/simple-module)
 [![Coveralls](https://img.shields.io/coveralls/mycolorway/simple-module.svg)](https://coveralls.io/github/mycolorway/simple-module)
-[![Code Climate](https://img.shields.io/codeclimate/github/mycolorway/simple-module.svg)](https://codeclimate.com/github/mycolorway/simple-module)
 [![David](https://img.shields.io/david/mycolorway/simple-module.svg)](https://david-dm.org/mycolorway/simple-module)
 [![David](https://img.shields.io/david/dev/mycolorway/simple-module.svg)](https://david-dm.org/mycolorway/simple-module#info=devDependencies)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/mycolorway/simple-module)
@@ -12,9 +11,9 @@ SimpleModule is a simple base class providing some necessary features to make it
 
 ## Features
 
-#### Event Emitter
+#### Events
 
-SimpleModule inherits from [EventEmitter2](https://github.com/asyncly/EventEmitter2) which is an advanced version of Node.js default [EventEmitter](https://nodejs.org/api/events.html). EventEmitter2 provides event namespaces and wildcards:
+SimpleModule delegate events mothods to jQuery object:
 
 ```js
 let module = new SimpleModule();
@@ -23,15 +22,15 @@ let module = new SimpleModule();
 module.on('customEvent.test', function(data) {
   console.log(data);
 });
-
-// module.one is alias of module.once
-module.one('customEvent.*', function(data) {
+// equivalent to
+$(module).on('customEvent.test', function(data) {
   console.log(data);
 });
 
-// module.trigger is alias of module.emit
-module.trigger('customEvent', 'data string');
-module.emit('customEvent', 'data string');
+// trigger a namespace event
+module.trigger('customEvent.test', 'test');
+// equivalent to
+$(module).trigger('customEvent.test', 'test');
 ```
 
 #### Mixins
@@ -133,9 +132,7 @@ If you want to publish new version to npm and bower, please make sure all tests 
 
 * Add new release information in `CHANGELOG.md`. The format of markdown contents will matter, because build scripts will get version and release content from this file by regular expression. You can follow the format of the older release information.
 
-* Run `gulp` default task, which will get version number from `CHANGELOG.md` and bump it into `package.json` and `bower.json`, before you push the commit for new version.
-
-* Put your [personal API tokens](https://github.com/blog/1509-personal-api-tokens) in `/.token.json`, which is required by build scripts to request [Github API](https://developer.github.com/v3/):
+* Put your [personal API tokens](https://github.com/blog/1509-personal-api-tokens) in `/.token.json`, which is required by the build scripts to request [Github API](https://developer.github.com/v3/) for creating new release:
 
 ```json
 {
@@ -145,11 +142,13 @@ If you want to publish new version to npm and bower, please make sure all tests 
 
 Now you can run `gulp publish` task, which will do these work for you:
 
-* Generate the static doc site and push it to `gh-pages` branch.
+* Get version number from `CHANGELOG.md` and bump it into `package.json` and `bower.json`.
 * Get release information from `CHANGELOG.md` and request Github API to create new release.
 
-If everything goes fine, you can publish new version to npm at the end:
+If everything goes fine, you can see your release at [https://github.com/mycolorway/simple-module/releases](https://github.com/mycolorway/simple-module/releases). At the End you can publish new version to npm with the command:
 
 ```bash
 npm publish
 ```
+
+Please be careful with the last step, because you cannot delete or republish a version on npm.

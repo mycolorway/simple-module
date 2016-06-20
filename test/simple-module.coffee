@@ -1,6 +1,4 @@
-SimpleModule = require '../src/simple-module.coffee'
-_ = require 'lodash'
-expect = require('chai').expect
+expect = chai.expect
 
 describe 'SimpleModule', ->
 
@@ -11,8 +9,7 @@ describe 'SimpleModule', ->
     start: ->
       this.started = true
 
-
-  it 'should inherit from EventEmitter', (done) ->
+  it 'should support custom events', ->
     module = new SimpleModule()
     callCount = 0
     listener = ->
@@ -36,20 +33,6 @@ describe 'SimpleModule', ->
     module.trigger 'customEvent'
     module.trigger 'customEvent'
     expect(callCount).to.be.equal(3)
-
-    module.on 'customEvent', (i) ->
-      new Promise (resolve) ->
-        setTimeout ->
-          resolve i
-        , 50
-    module.on 'customEvent', (i) ->
-      i + 1
-    module.triggerAsync 'customEvent', 1
-      .then (results) ->
-        expect(results.length).to.be.equal(2)
-        expect(results[0]).to.be.equal(1)
-        expect(results[1]).to.be.equal(2)
-        done()
 
   it 'can extend properties', ->
     extendWithWrongArgs = ->
@@ -102,14 +85,14 @@ describe 'SimpleModule', ->
         name: 'A'
       constructor: (opts) ->
         super()
-        _.extend @opts, ModuleA.opts, opts
+        $.extend @opts, ModuleA.opts, opts
 
     class ModuleB extends ModuleA
       @opts:
         name: 'B'
       constructor: (opts) ->
         super()
-        _.extend @opts, ModuleB.opts, opts
+        $.extend @opts, ModuleB.opts, opts
 
     moduleB = new ModuleB()
     moduleA = new ModuleA()

@@ -3,13 +3,11 @@ _ = require 'lodash'
 through = require 'through2'
 coffee = require 'coffee-script'
 browserify = require 'browserify'
-shim = require 'browserify-shim'
 handleError = require './error'
 
 module.exports = (opts) ->
   b = browserify _.extend
-    transform: [coffeeify, shim]
-    standalone: 'SimpleModule'
+    transform: [coffeeify]
     bundleExternal: false
   , opts
 
@@ -27,9 +25,8 @@ module.exports = (opts) ->
       handleError e, @
       done()
 
-
 coffeeify = (filename, opts = {}) ->
-  return unless /\.coffee$/.test(filename)
+  return through() unless /\.coffee$/.test(filename)
 
   opts = _.extend
     inline: true

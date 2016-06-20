@@ -1,31 +1,35 @@
 gulp = require 'gulp'
 gutil = require 'gulp-util'
-ghPages = require 'gulp-gh-pages'
-runSequence = require 'run-sequence'
 fs = require 'fs'
 request = require 'request'
 changelogs = require './helpers/changelogs'
-removeDir = require './helpers/remove-dir'
 handleError = require './helpers/error'
+changelogs = require './helpers/changelogs'
 
-gulp.task 'publish.docs', ['docs.jade'], ->
-  gulp.src '_docs/**/*'
-    .pipe ghPages().on 'end', -> removeDir '.publish'
+bumpVersion = (done) ->
+  newVersion = changelogs.lastestVersion
+  unless newVersion
+    throw new Error('Publish: Invalid version in CHANGELOG.md')
+    return
 
-gulp.task 'publish.createRelease', ->
+  pkg = require '../package'
+  pkg.version = newVersion
+  fs.writeFileSync './package.json', JSON.stringify(pkg, null, 2)
+
+  bowerConfig = require '../bower.json'
+  bowerConfig.version = newVersion
+  fs.writeFileSync './bower.json', JSON.stringify(bowerConfig, null, 2)
+
+  done()
+bumpVersion.displayName = 'bump-version'
+
+createRelease = (done) ->
   try
     token = require '../.token.json'
   catch e
     throw new Error 'Publish: Need github access token for creating release.'
     return
 
-  createRelease token.github
-
-gulp.task 'publish', ->
-  runSequence 'compile', 'test', 'docs', 'publish.docs', 'publish.createRelease'
-
-
-createRelease = (token) ->
   pkg = require '../package'
   content = changelogs.latestContent
   unless content
@@ -54,3 +58,17 @@ createRelease = (token) ->
     else
       message = "#{response.statusCode} #{JSON.stringify response.body}"
       handleError gutil.colors.red message
+    done()
+createRelease.displayName = 'create-release'
+
+publish = gulp.series [
+  compile.all,
+  test,
+  bumpVersion,
+  createRelease
+]..., (done) ->
+  done()
+
+gulp.task 'publish', publish
+
+module.exports = publish

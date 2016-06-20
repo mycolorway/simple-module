@@ -1,7 +1,4 @@
-EventEmitter = require 'eventemitter2'
-_            = require 'lodash'
-
-class SimpleModule extends EventEmitter
+class SimpleModule
 
   # Add properties to {SimpleModule} class.
   #
@@ -62,26 +59,21 @@ class SimpleModule extends EventEmitter
   #
   # @return The new instance.
   constructor: (opts) ->
-    super()
-    @opts = _.extend {}, SimpleModule.opts, opts
+    @opts = $.extend {}, SimpleModule.opts, opts
 
     @opts.plugins.forEach (name) =>
       @plugins[name] = new SimpleModule.plugins[name](@)
 
-  off: (name, listener) ->
-    if _.isFunction listener
-      super name, listener
-    else
-      @removeAllListeners name
+  on: (args...) ->
+    $(@).on args...
 
-  one: (args...) ->
-    @once args...
+  off: (args...) ->
+    $(@).off args...
 
   trigger: (args...) ->
-    @emit args...
+    $(@).triggerHandler(args...)
 
-  triggerAsync: (args...) ->
-    @emitAsync args...
-
+  one: (args...) ->
+    $(@).one args...
 
 module.exports = SimpleModule
