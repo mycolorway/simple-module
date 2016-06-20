@@ -4,7 +4,9 @@ fs = require 'fs'
 request = require 'request'
 changelogs = require './helpers/changelogs'
 handleError = require './helpers/error'
-changelogs = require './helpers/changelogs'
+compile = require './compile'
+test = require './test'
+_ = require 'lodash'
 
 bumpVersion = (done) ->
   newVersion = changelogs.lastestVersion
@@ -25,7 +27,7 @@ bumpVersion.displayName = 'bump-version'
 
 createRelease = (done) ->
   try
-    token = require '../.token.json'
+    token = _.trim fs.readFileSync('.token').toString()
   catch e
     throw new Error 'Publish: Need github access token for creating release.'
     return
@@ -62,7 +64,7 @@ createRelease = (done) ->
 createRelease.displayName = 'create-release'
 
 publish = gulp.series [
-  compile.all,
+  compile,
   test,
   bumpVersion,
   createRelease

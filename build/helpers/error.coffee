@@ -10,4 +10,4 @@ module.exports = (error, stream) ->
 
     stream.emit 'error', new gutil.PluginError 'gulp-build', error, opts
   else
-    gutil.log gutils.colors.red("gulp-build error: #{error.message || error}")
+    gutil.log gutil.colors.red("gulp-build error: #{error.message || error}")

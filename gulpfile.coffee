@@ -1,13 +1,14 @@
+gulp = require 'gulp'
 compile = require './build/compile.coffee'
 test = require './build/test.coffee'
-gulp = require 'gulp'
+publish = require './build/publish.coffee'
 coffeelint = require './build/helpers/coffeelint.coffee'
 
 lint = ->
   gulp.src 'build/**/*.coffee'
     .pipe coffeelint()
 
-gulp.task 'default', gulp.series lint, 'compile', test, (done) ->
+gulp.task 'default', gulp.series lint, compile, test, (done) ->
   gulp.watch 'build/**/*.coffee', lint
 
   gulp.watch 'src/**/*.coffee', gulp.series compile.coffee, test

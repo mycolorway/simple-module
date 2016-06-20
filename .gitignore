@@ -4,6 +4,6 @@ npm-debug.log
 _docs
 coverage
 .publish
-.token.json
+.token
 
 .DS_Store
