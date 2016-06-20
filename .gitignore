@@ -1,8 +1,8 @@
 node_modules
 bower_components
 npm-debug.log
-_docs
 coverage
+test/runner/*.js
 .publish
 .token
 
