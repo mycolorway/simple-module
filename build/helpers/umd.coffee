@@ -4,14 +4,7 @@ _ = require 'lodash'
 pkg = require '../../package'
 
 module.exports = (opts) ->
-  opts = _.extend
-    globalName: _.upperFirst _.camelCase pkg.name
-    dependencies:
-      cjs: ['jquery']
-      global: ['jQuery']
-      params: ['$']
-  , opts
-
+  opts = _.extend {}, pkg.umd, opts
   opts.dependencies.cjs = opts.dependencies.cjs.map (name) ->
     "require('#{name}')"
   .join ','

@@ -1,3 +1,4 @@
+SimpleModule = require '../src/simple-module'
 expect = chai.expect
 
 describe 'SimpleModule', ->

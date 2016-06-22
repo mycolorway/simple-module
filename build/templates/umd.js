@@ -2,7 +2,7 @@
   if (typeof module === 'object' && module.exports) {
     module.exports = factory(<%= dependencies.cjs %>);
   } else {
-    root.<%= globalName %> = factory(<%= dependencies.global %>);
+    root.<%= name %> = factory(<%= dependencies.global %>);
   }
 }(this, function (<%= dependencies.params %>) {
 var define, module, exports;
