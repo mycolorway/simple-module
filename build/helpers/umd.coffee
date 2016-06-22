@@ -4,7 +4,9 @@ _ = require 'lodash'
 pkg = require '../../package'
 
 module.exports = (opts) ->
-  opts = _.extend {}, pkg.umd, opts
+  umdConfig = _.cloneDeep pkg.umd
+  opts = _.extend umdConfig, opts
+
   opts.dependencies.cjs = opts.dependencies.cjs.map (name) ->
     "require('#{name}')"
   .join ','
