@@ -13,7 +13,7 @@ module.exports = (config) ->
     # list of files / patterns to load in the browser
     files: [
       'node_modules/jquery/dist/jquery.js'
-      'coverage/coverage-init.js'
+      'test/coverage-init.js'
       'src/simple-module.coffee'
       'test/simple-module.coffee'
     ]
@@ -40,8 +40,9 @@ module.exports = (config) ->
       framework:
         initAllSources: true
         sourcesBasePath: 'src'
-        dest: 'coverage/coverage-init.js'
+        dest: 'test/coverage-init.js'
         instrumentor: 'istanbul'
+
 
     coverageReporter:
       dir: 'coverage'
@@ -51,10 +52,11 @@ module.exports = (config) ->
         { type: 'text-summary' }
       ]
 
+
     # test results reporter to use
     # possible values: 'dots', 'progress'
     # available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['coverage', 'dots']
+    reporters: ['coverage', 'mocha']
 
 
     # web server port
