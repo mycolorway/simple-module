@@ -96,14 +96,6 @@ Install via bower:
 bower install --save simple-module
 ```
 
-## Issues
-
-If you have issues about this module, please consider discussing it on [Gitter channel](https://gitter.im/mycolorway/simple-module) first.
-
-If you confirm the issue is indeed a bug, please browse the [issues page](https://github.com/mycolorway/simple-module/issues) for existing issues describing the same problem before creating new issue.
-
-When you create new issue, please describe it with detailed information, for example, demo code, error stacks, screenshots etc. Issues without enough debug information will probably be closed.
-
 ## Development
 
 Clone repository from github:
@@ -151,4 +143,4 @@ If everything goes fine, you can see your release at [https://github.com/mycolor
 npm publish
 ```
 
-Please be careful with the last step, because you cannot delete or republish a version on npm.
+Please be careful with the last step, because you cannot delete or republish a release on npm.

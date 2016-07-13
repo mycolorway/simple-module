@@ -1,5 +1,3 @@
-coveragify = require 'browserify-coffee-coverage'
-
 module.exports = (config) ->
   config.set
 
@@ -9,13 +7,14 @@ module.exports = (config) ->
 
     # frameworks to use
     # available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['browserify', 'mocha', 'chai']
+    frameworks: ['coffee-coverage', 'browserify', 'mocha', 'chai']
 
 
     # list of files / patterns to load in the browser
     files: [
       'node_modules/jquery/dist/jquery.js'
-      'src/simple-module.coffee',
+      'coverage/coverage-init.js'
+      'src/simple-module.coffee'
       'test/simple-module.coffee'
     ]
 
@@ -33,9 +32,16 @@ module.exports = (config) ->
 
 
     browserify:
-      transform: [coveragify]
+      transform: [['browserify-coffee-coverage', {noInit: true, instrumentor: 'istanbul'}]]
       extensions: ['.js', '.coffee']
 
+
+    coffeeCoverage:
+      framework:
+        initAllSources: true
+        sourcesBasePath: 'src'
+        dest: 'coverage/coverage-init.js'
+        instrumentor: 'istanbul'
 
     coverageReporter:
       dir: 'coverage'
